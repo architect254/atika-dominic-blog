@@ -11,6 +11,7 @@ import { APIService } from '@core/services/api.service';
 
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
+import { ArticlesService } from '@core/services/articles.service';
 
 @Component({
   selector: 'adb-root',
@@ -46,6 +47,7 @@ export class AppComponent extends PageDirective {
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this.ApiService.pingAPI();
   }
 
   checkForNewVersion = async () => {

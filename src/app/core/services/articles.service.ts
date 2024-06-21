@@ -28,8 +28,8 @@ export class ArticlesService extends APIService {
             this.$articles.next(articles);
           },
           (error: Error) => {
-            this.snackBar.open(error.message, undefined, {
-              panelClass: `danger`,
+            this.snackBar.open(error.toString(), undefined, {
+              panelClass: `mat-warn`,
             });
           }
         )

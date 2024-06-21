@@ -13,7 +13,8 @@ import { Subscription, catchError, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class APIService implements OnDestroy {
-  readonly BASE_URL = `API`;
+  readonly #END_POINT = `http://127.0.0.1:4200`;
+  readonly BASE_URL = `${this.#END_POINT}/api`;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -38,8 +39,8 @@ export class APIService implements OnDestroy {
               panelClass: `danger`,
             });
           },
-          (err: Error) => {
-            this.snackBar.open(`Error`, undefined, {
+          (error: Error) => {
+            this.snackBar.open(error.toString(), undefined, {
               panelClass: `danger`,
             });
           }
