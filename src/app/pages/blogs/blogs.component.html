@@ -1,0 +1,13 @@
+<adb-dashboard></adb-dashboard>
+<cdk-virtual-scroll-viewport
+  itemSize="50"
+  minBufferPx="200"
+  maxBufferPx="400"
+  [style.height]="gridHeight + 'px'"
+  [style.width]="gridWidth + 'px'"
+  class="viewport"
+>
+  <adb-grid [style.height]="gridHeight + 'px'" [style.width]="gridWidth + 'px'">
+    <adb-card *cdkVirtualFor="let article of articles$ | async" [article]="article"></adb-card>
+  </adb-grid>
+</cdk-virtual-scroll-viewport>

@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <mat-toolbar-row class="container primary-nav">
+    <header class="site-header" routerLink="/">Atika Dominic</header>
+
+    <nav class="navigation-btns">
+      <a
+        mat-flat-button
+        routerLink="/info"
+        fragment="about-atika"
+        routerLinkOptions="{anchorScrolling:'enabled'}"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="About Atika Dominic"
+          fontIcon="info"
+        ></mat-icon>
+        About Atika
+      </a>
+      <a mat-flat-button routerLink="/info" fragment="contact-atika"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="Contact Atika Dominic"
+          fontIcon="phone"
+        ></mat-icon>
+        Contact Atika
+      </a>
+      <a mat-button routerLink="/sign-in"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="Contact Atika Dominic"
+          fontIcon="login"
+        ></mat-icon>
+        Login
+      </a>
+    </nav>
+  </mat-toolbar-row>
+</mat-toolbar>
+<section class="container">
+  <router-outlet></router-outlet>
+</section>

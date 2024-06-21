@@ -1,47 +1,37 @@
-import {
-  ApplicationRef,
-  Component,
-  InjectionToken,
-  NgZone,
-} from '@angular/core';
+import { ApplicationRef, Component, NgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
-import { PageDirective } from './shared/page/page.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { environment } from '../environments/environment';
-import { Title, Meta } from '@angular/platform-browser';
 import { SwUpdate } from '@angular/service-worker';
-import { Subscription, first } from 'rxjs';
-import { AppShellComponent } from './app-shell/app-shell.component';
 
-export const API_BASE_URL = new InjectionToken('Dynamic API Base Url');
+import { first } from 'rxjs';
 
-const apiFactory = () => {
-  if (environment.production) {
-    return ``;
-  } else {
-    return `localhost:3000`;
-  }
-};
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { APIService } from '@core/services/api.service';
+
+import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
+import { PageDirective } from '@shared/directives/page/page.directive';
 
 @Component({
-  selector: 'root',
+  selector: 'adb-root',
   standalone: true,
-  imports: [RouterOutlet, ScrollingModule, AppShellComponent],
-  providers: [{ provide: API_BASE_URL, useFactory: apiFactory }],
+  imports: [
+    RouterOutlet,
+    ScrollingModule,
+    MatSnackBarModule,
+    AppShellComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent extends PageDirective {
-
   constructor(
-    _title: Title,
-    _meta: Meta,
     appRef: ApplicationRef,
     zone: NgZone,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private ApiService: APIService
   ) {
-    super(_title, _meta);
+    super();
     this.$subscription$.add(
       appRef.isStable.pipe(first((stable) => stable)).subscribe((t) =>
         zone.run(() => {
@@ -52,6 +42,10 @@ export class AppComponent extends PageDirective {
         })
       )
     );
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
   }
 
   checkForNewVersion = async () => {
@@ -96,11 +90,11 @@ export class AppComponent extends PageDirective {
       },
       {
         name: `twitter:site`,
-        content: `https://www.yowhood.com`,
+        content: `https://www.atikadominic.com`,
       },
       {
         name: `twitter:creator`,
-        content: `Jared Bada - Code Links Industries Ltd`,
+        content: `Atika Dominic`,
       },
     ]);
   }
@@ -121,11 +115,11 @@ export class AppComponent extends PageDirective {
       },
       {
         name: `og:url`,
-        content: `https://www.yowhood.com`,
+        content: `https://www.atikadominic.com`,
       },
       {
         name: `og:site_name`,
-        content: `YowHood`,
+        content: `Atika Dominic`,
       },
       {
         name: `og:locale`,
@@ -155,7 +149,7 @@ export class AppComponent extends PageDirective {
   }
 
   override setDefaultMetaAndTitle(): void {
-    this.setTitle(`YowHood - Wholesome Services For YowHood`);
+    this.setTitle(`Atika Dominic - Blog`);
     this.setMeta([
       {
         name: `description`,

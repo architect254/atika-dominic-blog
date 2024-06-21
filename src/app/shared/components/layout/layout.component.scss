@@ -1,0 +1,12 @@
+.primary-nav {
+    &,.navigation-btns {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .navigation-btns{
+        width: fit-content;
+        gap: 16px;
+    }
+
+}

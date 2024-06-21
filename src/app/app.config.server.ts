@@ -1,8 +1,10 @@
 import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
 import { provideServerRendering } from '@angular/platform-server';
-import { appConfig } from './app.config';
 import { ROUTES } from '@angular/router';
-import { AppShellComponent } from './app-shell/app-shell.component';
+
+import { appConfig } from './app.config';
+
+import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 
 const serverConfig: ApplicationConfig = {
   providers: [
