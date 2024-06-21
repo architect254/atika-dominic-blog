@@ -1,0 +1,24 @@
+<mat-card class="card">
+    <img
+      mat-card-image
+      [src]="content?.image_url"
+      [alt]="'image of ' + content?.desc"
+    />
+    <mat-card-content>
+      <section class="title">
+        <h2 class="mat-headline-medium">{{content?.desc}}</h2>
+      </section>
+      <section class="info">
+        <section class="article">
+          <article>
+            <div class="label mat-title-medium">number of rooms</div>
+            <div class="value mat-title-large">{{content?.rooms}}</div>
+          </article>
+          <article>
+            <div class="label mat-title-medium">amount in rent</div>
+            <div class="value mat-title-large">{{content?.rent | currency:'KSH':'code'}}</div>
+          </article>
+        </section>
+      </section>
+    </mat-card-content>
+</mat-card>

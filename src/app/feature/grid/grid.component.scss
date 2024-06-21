@@ -1,0 +1,8 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 20px;
+  padding: 4px;
+  align-items: stretch;
+  overflow: auto;
+}
