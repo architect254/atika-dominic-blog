@@ -45,11 +45,6 @@ export class AppComponent extends PageDirective {
     );
   }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.ApiService.pingAPI();
-  }
-
   checkForNewVersion = async () => {
     try {
       // Check if Service Worker is supported by the Browser

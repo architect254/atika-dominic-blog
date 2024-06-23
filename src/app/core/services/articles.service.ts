@@ -12,7 +12,18 @@ import { APIService } from './api.service';
 export class ArticlesService extends APIService {
   readonly API_URL: string = `${this.BASE_URL}/articles`;
 
-  $articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
+  $articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([
+    {
+      image_url: `google.com`,
+      title: `Lorem Ipsume Title`,
+      content: `Lorem Ipsum Content`,
+      author: `Atika Dominic`,
+      created_date: new Date(),
+      updated_date: new Date(),
+      row_span: 2,
+      col_span: 3,
+    },
+  ]);
 
   get articles$(): Observable<Article[]> {
     return this.$articles.asObservable();

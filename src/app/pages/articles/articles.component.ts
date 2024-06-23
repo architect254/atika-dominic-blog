@@ -20,7 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { APIService } from '@core/services/api.service';
 
 @Component({
-  selector: 'adb-blogs',
+  selector: 'adb-articles',
   standalone: true,
   imports: [
     ScrollingModule,
@@ -33,10 +33,10 @@ import { APIService } from '@core/services/api.service';
     MatButtonModule,
     MatCardModule,
   ],
-  templateUrl: './blogs.component.html',
-  styleUrl: './blogs.component.scss',
+  templateUrl: './articles.component.html',
+  styleUrl: './articles.component.scss',
 })
-export class BlogsComponent extends GridContainerDirective {
+export class ArticlesComponent extends GridContainerDirective {
   articles$: Observable<Article[]> = of([]);
 
   constructor(private _articlesService: ArticlesService) {
