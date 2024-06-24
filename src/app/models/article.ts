@@ -1,10 +1,12 @@
 export interface Article {
+  id: string;
   title: string;
   content: string;
   image_url: string;
   author: string;
-  created_date: Date;
-  updated_date: Date;
+  upvotes: number;
+  date_created: Date;
+  date_updated: Date;
   row_span: number;
   col_span: number;
 }

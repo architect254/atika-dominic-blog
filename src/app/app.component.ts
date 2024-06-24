@@ -7,11 +7,8 @@ import { first } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { APIService } from '@core/services/api.service';
-
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
-import { ArticlesService } from '@core/services/articles.service';
 
 @Component({
   selector: 'adb-root',
@@ -22,6 +19,7 @@ import { ArticlesService } from '@core/services/articles.service';
     MatSnackBarModule,
     AppShellComponent,
   ],
+  providers: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -29,8 +27,7 @@ export class AppComponent extends PageDirective {
   constructor(
     appRef: ApplicationRef,
     zone: NgZone,
-    private swUpdate: SwUpdate,
-    private ApiService: APIService
+    private swUpdate: SwUpdate
   ) {
     super();
     this.$subscription$.add(
@@ -44,6 +41,8 @@ export class AppComponent extends PageDirective {
       )
     );
   }
+
+  override ngOnInit() {}
 
   checkForNewVersion = async () => {
     try {

@@ -7,14 +7,18 @@ import { Injectable, OnDestroy, inject } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subscription, catchError, throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class APIService implements OnDestroy {
-  readonly #END_POINT = `http://127.0.0.1:4200`;
-  readonly BASE_URL = `${this.#END_POINT}/api`;
+  readonly #API_URL = `http://localhost:3000`;
+  readonly BASE_URL = `${this.#API_URL}/api`;
+
+  protected endpoint = `${this.BASE_URL}`;
+
+  protected _http = inject(HttpClient);
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -26,27 +30,7 @@ export class APIService implements OnDestroy {
 
   snackBar = inject(MatSnackBar);
 
-  constructor(public _http: HttpClient) {}
-
-  pingAPI() {
-    this.$subscriptions$.add(
-      this._http
-        .get(this.BASE_URL, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (res) => {
-            this.snackBar.open(`API Pinged`, undefined, {
-              panelClass: `danger`,
-            });
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `danger`,
-            });
-          }
-        )
-    );
-  }
+  constructor() {}
 
   errorHandler(error: HttpErrorResponse) {
     let errorMessage = '';

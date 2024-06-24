@@ -5,6 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+import { AppService } from 'app/app.service';
+
 @Component({
   selector: 'layout',
   templateUrl: './layout.component.html',
@@ -20,5 +22,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LayoutComponent implements OnInit {
   title: string = ``;
+  constructor(private _appService:AppService){}
   ngOnInit(): void {}
+
+  login(){
+    this._appService.openDialog('0ms','0ms');
+  }
 }
