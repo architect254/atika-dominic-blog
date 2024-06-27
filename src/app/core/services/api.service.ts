@@ -13,7 +13,7 @@ import { Subscription, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class APIService implements OnDestroy {
-  readonly #API_URL = `http://localhost:3000`;
+  readonly #API_URL = `http://atikadominic.com`;
   readonly BASE_URL = `${this.#API_URL}/api`;
 
   protected endpoint = `${this.BASE_URL}`;

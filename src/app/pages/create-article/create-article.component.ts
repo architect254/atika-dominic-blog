@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { ArticlesService } from '@core/services/articles.service';
+import { ArticlePayload } from '@models/article';
 
 @Component({
   selector: 'adb-create-article',
@@ -46,7 +48,10 @@ export class CreateArticleComponent {
 
   announcer = inject(LiveAnnouncer);
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(
+    private _fb: FormBuilder,
+    private articleService: ArticlesService
+  ) {}
 
   removeKeyword(keyword: string) {
     this.keywords.update((keywords) => {
@@ -59,6 +64,7 @@ export class CreateArticleComponent {
       this.announcer.announce(`removed ${keyword}`);
       return [...keywords];
     });
+    this.articleForm.get(`keywords`)?.setValue(this.keywords().toString());
   }
 
   add(event: MatChipInputEvent): void {
@@ -69,9 +75,23 @@ export class CreateArticleComponent {
       this.keywords.update((keywords) => [...keywords, value]);
     }
 
+    this.articleForm.get(`keywords`)?.setValue(this.keywords().toString());
+
     // Clear the input value
     event.chipInput!.clear();
   }
 
-  submit() {}
+  submit() {
+    this.articleService.createArticle(
+      {
+        ...this.articleForm.getRawValue(),
+      } as ArticlePayload,
+      (response: any) => {
+        console.log(`Article Success`, response);
+      },
+      (error: Error) => {
+        console.error(`Article Error`, error);
+      }
+    );
+  }
 }

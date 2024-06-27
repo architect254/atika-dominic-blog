@@ -1,7 +1,7 @@
 <mat-card class="card">
   <img
     mat-card-image
-    [src]="article?.image_url"
+    [src]="article?.header_image"
     [alt]="'image of ' + article?.title"
   />
 
@@ -19,5 +19,5 @@
 
   <mat-card-actions> Like | Share </mat-card-actions>
 
-  <mat-card-footer>{{ article?.author }}</mat-card-footer>
+  <mat-card-footer>{{ article?.creator?.name }}</mat-card-footer>
 </mat-card>
