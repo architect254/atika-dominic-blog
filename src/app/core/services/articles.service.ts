@@ -36,21 +36,15 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/`;
     this.$subscriptions$.add(
-      this._http
-        .post<Article>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (article) => {
-            this.$selectedArticle.next(article);
-            onSuccess?.(article);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.post<Article>(endpoint, this.httpOptions).subscribe(
+        (article) => {
+          this.$selectedArticle.next(article);
+          onSuccess?.(article);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -62,21 +56,15 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/${id}`;
     this.$subscriptions$.add(
-      this._http
-        .put<Article>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (article) => {
-            this.$selectedArticle.next(article);
-            onSuccess?.(article);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.put<Article>(endpoint, this.httpOptions).subscribe(
+        (article) => {
+          this.$selectedArticle.next(article);
+          onSuccess?.(article);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -88,21 +76,15 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/${id}/upload-header-image`;
     this.$subscriptions$.add(
-      this._http
-        .put<Article>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (article) => {
-            this.$selectedArticle.next(article);
-            onSuccess?.(article);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.put<Article>(endpoint, this.httpOptions).subscribe(
+        (article) => {
+          this.$selectedArticle.next(article);
+          onSuccess?.(article);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -113,21 +95,15 @@ export class ArticlesService extends APIService {
     const endpoint = `${this.endpoint}/`;
 
     this.$subscriptions$.add(
-      this._http
-        .get<Article[]>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (articles) => {
-            this.$articles.next(articles);
-            onSuccess?.(articles);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.get<Article[]>(endpoint, this.httpOptions).subscribe(
+        (articles) => {
+          this.$articles.next(articles);
+          onSuccess?.(articles);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -138,21 +114,15 @@ export class ArticlesService extends APIService {
   ): void {
     const endpoint = `${this.endpoint}/${id}`;
     this.$subscriptions$.add(
-      this._http
-        .get<Article>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (article) => {
-            this.$selectedArticle.next(article);
-            onSuccess?.(article);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.get<Article>(endpoint, this.httpOptions).subscribe(
+        (article) => {
+          this.$selectedArticle.next(article);
+          onSuccess?.(article);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -163,20 +133,14 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/${id}`;
     this.$subscriptions$.add(
-      this._http
-        .delete<void>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          () => {
-            onSuccess?.();
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.delete<void>(endpoint, this.httpOptions).subscribe(
+        () => {
+          onSuccess?.();
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -187,21 +151,15 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/comments`;
     this.$subscriptions$.add(
-      this._http
-        .post<Comment>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (comment) => {
-            this.$selectedComment.next(comment);
-            onSuccess?.(comment);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.post<Comment>(endpoint, this.httpOptions).subscribe(
+        (comment) => {
+          this.$selectedComment.next(comment);
+          onSuccess?.(comment);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -212,21 +170,15 @@ export class ArticlesService extends APIService {
     const endpoint = `${this.endpoint}/comments`;
 
     this.$subscriptions$.add(
-      this._http
-        .get<Comment[]>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          (comments) => {
-            this.$comments.next(comments);
-            onSuccess?.(comments);
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.get<Comment[]>(endpoint, this.httpOptions).subscribe(
+        (comments) => {
+          this.$comments.next(comments);
+          onSuccess?.(comments);
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 
@@ -237,20 +189,14 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/comments/${id}`;
     this.$subscriptions$.add(
-      this._http
-        .delete<void>(endpoint, this.httpOptions)
-        .pipe(catchError(this.errorHandler))
-        .subscribe(
-          () => {
-            onSuccess?.();
-          },
-          (error: Error) => {
-            this.snackBar.open(error.toString(), undefined, {
-              panelClass: `mat-warn`,
-            });
-            onError?.(error);
-          }
-        )
+      this._http.delete<void>(endpoint, this.httpOptions).subscribe(
+        () => {
+          onSuccess?.();
+        },
+        (error: Error) => {
+          onError?.(error);
+        }
+      )
     );
   }
 }

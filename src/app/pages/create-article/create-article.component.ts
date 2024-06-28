@@ -35,16 +35,13 @@ import { ArticlePayload } from '@models/article';
 })
 export class CreateArticleComponent {
   articleForm: FormGroup = this._fb.group({
-    article: ['', Validators.required],
+    title: ['', Validators.required],
+    summary: ['', Validators.required],
     keywords: ['', Validators.required],
+    content: ['', Validators.required],
   });
 
-  readonly keywords = signal([
-    'angular',
-    'how-to',
-    'tutorial',
-    'accessibility',
-  ]);
+  readonly keywords = signal(['Blog Article']);
 
   announcer = inject(LiveAnnouncer);
 
@@ -83,9 +80,7 @@ export class CreateArticleComponent {
 
   submit() {
     this.articleService.createArticle(
-      {
-        ...this.articleForm.getRawValue(),
-      } as ArticlePayload,
+      this.articleForm.value,
       (response: any) => {
         console.log(`Article Success`, response);
       },

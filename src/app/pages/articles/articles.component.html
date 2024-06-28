@@ -1,4 +1,14 @@
-<h1 class="mat-h1">Articles</h1>
+<nav class="article-nav">
+  <h1 class="mat-h1">Articles</h1>
+  <a mat-button (click)="createArticle()"
+    ><mat-icon
+      aria-hidden="false"
+      aria-label="Create Article"
+      fontIcon="add"
+    ></mat-icon>
+    Create Article
+  </a>
+</nav>
 
 <cdk-virtual-scroll-viewport
   itemSize="50"

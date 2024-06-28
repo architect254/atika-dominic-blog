@@ -23,6 +23,7 @@
         ></mat-icon>
         Contact Atika
       </a>
+      @if (!(user$ | async)) {
       <a mat-button (click)="login()"
         ><mat-icon
           aria-hidden="false"
@@ -31,6 +32,9 @@
         ></mat-icon>
         Login
       </a>
+      } @else {
+      <span class="username">{{ (user$ | async)?.name }}</span>
+      }
     </nav>
   </mat-toolbar-row>
 </mat-toolbar>

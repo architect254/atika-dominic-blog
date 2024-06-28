@@ -79,7 +79,6 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
             name: ['', Validators.required],
             username: ['', Validators.required],
             email: ['', Validators.required],
-            profile: ['', Validators.required],
             password: ['', Validators.required],
             confirm_password: ['', Validators.required],
           });
@@ -116,6 +115,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
           payLoad,
           () => {
             this.loading = false;
+            window.location.reload();
           },
           () => {
             this.loading = false;
@@ -125,6 +125,16 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
           payLoad,
           () => {
             this.loading = false;
+            this._authService.signIn(
+              payLoad,
+              () => {
+                this.loading = false;
+                window.location.reload();
+              },
+              () => {
+                this.loading = false;
+              }
+            );
           },
           () => {
             this.loading = false;

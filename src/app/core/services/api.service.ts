@@ -5,9 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable, OnDestroy, inject } from '@angular/core';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { Subscription, throwError } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,23 +26,7 @@ export class APIService implements OnDestroy {
 
   $subscriptions$: Subscription = new Subscription();
 
-  snackBar = inject(MatSnackBar);
-
   constructor() {}
-
-  errorHandler(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof HttpErrorResponse) {
-      // Get server-side error
-      errorMessage = `${error.status} - ${error.statusText || ''}: ${
-        error.message
-      }`;
-    } else {
-      // Get client-side error
-      errorMessage = error.error.message;
-    }
-    return throwError(() => errorMessage);
-  }
 
   ngOnDestroy(): void {
     if (this.$subscriptions$) {

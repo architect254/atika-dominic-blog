@@ -1,11 +1,16 @@
 import { ApplicationRef, Component, NgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SwUpdate } from '@angular/service-worker';
+
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { first } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { errorInterceptor } from '@core/interceptors/error.interceptor';
 
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
@@ -19,7 +24,12 @@ import { PageDirective } from '@shared/directives/page/page.directive';
     MatSnackBarModule,
     AppShellComponent,
   ],
-  providers: [],
+  providers: [
+    JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    { provide: HTTP_INTERCEPTORS, useFactory: errorInterceptor, multi: true },
+    { provide: Window, useValue: Window },
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

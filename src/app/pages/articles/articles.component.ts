@@ -18,6 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { APIService } from '@core/services/api.service';
+import { Router } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
+import { User } from '@models/user';
 
 @Component({
   selector: 'adb-articles',
@@ -37,14 +40,27 @@ import { APIService } from '@core/services/api.service';
   styleUrl: './articles.component.scss',
 })
 export class ArticlesComponent extends GridContainerDirective {
-  articles$: Observable<Article[]> = of([]);
-
-  constructor(private _articlesService: ArticlesService) {
+  articles$: Observable<Article[]> = this._articlesService.$articles;
+  user$: Observable<User | null> = this.authService.user$;
+  
+  constructor(
+    private _articlesService: ArticlesService,
+    private authService: AuthService,
+    private router: Router
+  ) {
     super();
+  }
+
+  createArticle() {
+    this.router.navigate(['create-article']);
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this._articlesService.getArticles(
+      (error: Error) => {},
+      (response: any) => {}
+    );
   }
 
   override setDefaultMetaAndTitle(): void {}

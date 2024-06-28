@@ -3,6 +3,22 @@
 <form [formGroup]="articleForm" (submit)="submit()">
   <div class="form-controls">
     <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="Article Title..." />
+      <mat-icon matPrefix>tag</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Summary</mat-label>
+      <input
+        matInput
+        formControlName="summary"
+        placeholder="Brief article description..."
+      />
+      <mat-icon matPrefix>tag</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Article keywords</mat-label>
       <mat-chip-grid
         #chipGrid
@@ -25,12 +41,10 @@
       />
       <mat-icon matPrefix>tag</mat-icon>
     </mat-form-field>
-
-    <button mat-flat-button type="submit">Save article</button>
   </div>
 
   <editor
-    formControlName="article"
+    formControlName="content"
     [init]="{
     base_url: '/tinymce',
     suffix: '.min',
@@ -47,6 +61,7 @@
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
   }"
   ></editor>
+  <div><button mat-flat-button type="submit">Save article</button></div>
 </form>
 
 <!-- 'body {

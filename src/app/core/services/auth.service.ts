@@ -1,8 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+
+import { MatDialog } from '@angular/material/dialog';
+
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+
+import { jwtDecode } from 'jwt-decode';
 
 import { APIService } from './api.service';
 
-import { SignInPayload, SignUpPayload } from '@models/auth.payload';
+import { User } from '@models/user';
+import { STORAGE_KEYS } from '@models/constants';
+import { SignInPayload, SignUpPayload, JwtPayload } from '@models/auth.payload';
+
+import { AuthDialogComponent } from '@shared/components/auth-dialog/auth-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +22,41 @@ import { SignInPayload, SignUpPayload } from '@models/auth.payload';
 export class AuthService extends APIService {
   protected override endpoint: string = `${this.BASE_URL}`;
 
+  accessToken =
+    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ??
+    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+
+  private tokenSubject: BehaviorSubject<any> = new BehaviorSubject(
+    this.accessToken
+  );
+  public token$: Observable<any> = this.tokenSubject.asObservable();
+
+  private jwtHelper = new JwtHelperService();
+
+  private readonly dialog = inject(MatDialog);
+
   constructor() {
     super();
+  }
+
+  public get user$(): Observable<User | null> {
+    return this.token$.pipe(
+      map((token) => {
+        if (token) {
+          const payload: JwtPayload = jwtDecode(token);
+          return payload.user;
+        }
+        return null;
+      })
+    );
+  }
+
+  public isAuthenticated(): Observable<boolean> {
+    return this.token$.pipe(
+      map((token) => {
+        return !this.jwtHelper.isTokenExpired(token);
+      })
+    );
   }
 
   signUp(
@@ -39,14 +84,38 @@ export class AuthService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/sign-in`;
     this.$subscriptions$.add(
-      this._http.post(endpoint, payload, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess(res);
-        },
-        (error) => {
-          onError(error);
-        }
-      )
+      this._http
+        .post<{ accessToken: string }>(endpoint, payload, this.httpOptions)
+        .pipe(
+          tap({
+            next: ({ accessToken }) => {
+              localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+              this.tokenSubject.next(accessToken);
+            },
+          })
+        )
+        .subscribe({
+          next: (res) => {
+            onSuccess(res);
+          },
+          error: (error) => {
+            onError(error);
+          },
+        })
     );
+  }
+  signOut() {
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.tokenSubject.next(null);
+  }
+
+  resetPassword(payload: any) {
+    return this._http.post<any>(`${this.endpoint}/reset-password`, payload);
+  }
+
+  openDialog(): void {
+    this.dialog.open(AuthDialogComponent, {
+      width: '450px',
+    });
   }
 }

@@ -1,8 +1,12 @@
-.form-controls{
+.form-controls {
     display: flex;
-    align-items: baseline;
-    gap: 64px;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
-button{
+
+button {
     text-wrap: nowrap;
+    float: right;
+    margin: 16px 0;
 }

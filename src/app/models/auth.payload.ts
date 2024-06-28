@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface SignUpPayload {
   name: string;
   username: string;
@@ -8,4 +10,8 @@ export interface SignUpPayload {
 export interface SignInPayload {
   username: string;
   password: string;
+}
+
+export interface JwtPayload {
+  user: User;
 }
