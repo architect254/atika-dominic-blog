@@ -15,6 +15,7 @@ import { STORAGE_KEYS } from '@models/constants';
 import { SignInPayload, SignUpPayload, JwtPayload } from '@models/auth.payload';
 
 import { AuthDialogComponent } from '@shared/components/auth-dialog/auth-dialog.component';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +24,8 @@ export class AuthService extends APIService {
   protected override endpoint: string = `${this.BASE_URL}`;
 
   accessToken =
-    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ??
-    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.storage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ??
+    this.storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
   private tokenSubject: BehaviorSubject<any> = new BehaviorSubject(
     this.accessToken
@@ -35,7 +36,7 @@ export class AuthService extends APIService {
 
   private readonly dialog = inject(MatDialog);
 
-  constructor() {
+  constructor(private storage: StorageService) {
     super();
   }
 
@@ -89,7 +90,7 @@ export class AuthService extends APIService {
         .pipe(
           tap({
             next: ({ accessToken }) => {
-              localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+              this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
               this.tokenSubject.next(accessToken);
             },
           })
@@ -105,7 +106,7 @@ export class AuthService extends APIService {
     );
   }
   signOut() {
-    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.storage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
     this.tokenSubject.next(null);
   }
 

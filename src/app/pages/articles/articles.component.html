@@ -1,5 +1,6 @@
 <nav class="article-nav">
   <h1 class="mat-h1">Articles</h1>
+  @if (!(user$ | async)) {
   <a mat-button (click)="createArticle()"
     ><mat-icon
       aria-hidden="false"
@@ -8,6 +9,7 @@
     ></mat-icon>
     Create Article
   </a>
+  }
 </nav>
 
 <cdk-virtual-scroll-viewport
