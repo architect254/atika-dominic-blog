@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-
+import { Inject, Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -16,6 +16,7 @@ import { SignInPayload, SignUpPayload, JwtPayload } from '@models/auth.payload';
 
 import { AuthDialogComponent } from '@shared/components/auth-dialog/auth-dialog.component';
 import { StorageService } from './storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -34,10 +35,13 @@ export class AuthService extends APIService {
 
   private jwtHelper = new JwtHelperService();
 
-  private readonly dialog = inject(MatDialog);
-
-  constructor(private storage: StorageService) {
-    super();
+  constructor(
+    protected override _http: HttpClient,
+    protected override snackBar: MatSnackBar,
+    private readonly dialog: MatDialog,
+    private storage: StorageService
+  ) {
+    super(_http, snackBar);
   }
 
   public get user$(): Observable<User | null> {

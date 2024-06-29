@@ -4,6 +4,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable, OnDestroy, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 
@@ -16,8 +17,6 @@ export class APIService implements OnDestroy {
 
   protected endpoint = `${this.BASE_URL}`;
 
-  protected _http = inject(HttpClient);
-
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -26,7 +25,7 @@ export class APIService implements OnDestroy {
 
   $subscriptions$: Subscription = new Subscription();
 
-  constructor() {}
+  constructor(protected _http: HttpClient, protected snackBar: MatSnackBar) {}
 
   ngOnDestroy(): void {
     if (this.$subscriptions$) {

@@ -71,8 +71,15 @@ body {
 mat-form-field {
   width: 100%;
 }
+
 ::ng-deep {
   .mat-mdc-dialog-content {
-      max-height: 90vh;
+    max-height: 90vh;
+  }
+  .danger-dialog {
+    .mat-mdc-snackbar-surface {
+      background-color: red;
+      padding: 0;
+    }
   }
 }

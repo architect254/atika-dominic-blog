@@ -1,4 +1,9 @@
-import { ApplicationRef, Component, NgZone } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  InjectionToken,
+  NgZone,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -10,10 +15,11 @@ import { first } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { errorInterceptor } from '@core/interceptors/error.interceptor';
-
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
+import { Meta, Title } from '@angular/platform-browser';
+
+export const API_URL = new InjectionToken<string>(`API_URL`);
 
 @Component({
   selector: 'adb-root',
@@ -27,19 +33,20 @@ import { PageDirective } from '@shared/directives/page/page.directive';
   providers: [
     JwtHelperService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    { provide: HTTP_INTERCEPTORS, useFactory: errorInterceptor, multi: true },
-    { provide: Window, useValue: Window },
+    { provide: API_URL, useValue: `http://atikadominic.com` },
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent extends PageDirective {
   constructor(
+    protected override title: Title,
+    protected override meta: Meta,
     appRef: ApplicationRef,
     zone: NgZone,
     private swUpdate: SwUpdate
   ) {
-    super();
+    super(title, meta);
     this.$subscription$.add(
       appRef.isStable.pipe(first((stable) => stable)).subscribe((t) =>
         zone.run(() => {

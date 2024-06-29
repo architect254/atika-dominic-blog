@@ -6,11 +6,9 @@ import { Subscription } from 'rxjs';
   standalone: true,
 })
 export abstract class PageDirective implements OnInit, OnDestroy {
-  title = inject(Title);
-  meta = inject(Meta);
-
   $subscription$: Subscription = new Subscription();
 
+  constructor(protected title: Title, protected meta: Meta) {}
   ngOnInit(): void {
     this.applyMetaTags();
   }

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 
-import { Article, ArticlePayload } from 'app/models/article';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { BehaviorSubject, Observable, catchError } from 'rxjs';
+import { Article, ArticlePayload } from '@models/article';
+
+import { CommentPayload } from '@models/comment';
+import { PaginationParams } from '@models/constants';
 
 import { APIService } from './api.service';
-import { CommentPayload } from '@models/comment';
 
 @Injectable({
   providedIn: 'root',
@@ -36,9 +39,10 @@ export class ArticlesService extends APIService {
   ) {
     const endpoint = `${this.endpoint}/`;
     this.$subscriptions$.add(
-      this._http.post<Article>(endpoint, this.httpOptions).subscribe(
+      this._http.post<Article>(endpoint, payload, this.httpOptions).subscribe(
         (article) => {
           this.$selectedArticle.next(article);
+          this.snackBar.open(`Article created successfully`)
           onSuccess?.(article);
         },
         (error: Error) => {
@@ -89,13 +93,20 @@ export class ArticlesService extends APIService {
   }
 
   getArticles(
+    { page, pageSize }: PaginationParams,
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
   ): void {
     const endpoint = `${this.endpoint}/`;
 
+    let queryParams = new HttpParams()
+      .set(`page`, page)
+      .append(`pageSize`, pageSize);
+
+    const options = { ...this.httpOptions, params: queryParams };
+
     this.$subscriptions$.add(
-      this._http.get<Article[]>(endpoint, this.httpOptions).subscribe(
+      this._http.get<Article[]>(endpoint, options).subscribe(
         (articles) => {
           this.$articles.next(articles);
           onSuccess?.(articles);

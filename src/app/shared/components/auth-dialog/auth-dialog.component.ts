@@ -52,8 +52,6 @@ import { profile } from 'console';
   styleUrl: './auth-dialog.component.scss',
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
-  readonly dialogRef = inject(MatDialogRef<AuthDialogComponent>);
-
   $action = new BehaviorSubject('Login');
   $subscription$ = new Subscription();
 
@@ -61,7 +59,11 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
   loading = false;
 
-  constructor(private _fb: FormBuilder, private _authService: AuthService) {}
+  constructor(
+    private _fb: FormBuilder,
+    readonly dialogRef: MatDialogRef<AuthDialogComponent>,
+    private _authService: AuthService
+  ) {}
 
   get action$() {
     return this.$action.asObservable();

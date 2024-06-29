@@ -1,5 +1,9 @@
-.article-nav{
+.article-nav {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+}
+
+adb-card:hover {
+    cursor: pointer;
 }

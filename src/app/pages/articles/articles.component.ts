@@ -1,5 +1,5 @@
-import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { AsyncPipe, DOCUMENT, JsonPipe } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { Observable, of } from 'rxjs';
@@ -21,6 +21,7 @@ import { APIService } from '@core/services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@models/user';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'adb-articles',
@@ -30,6 +31,7 @@ import { User } from '@models/user';
     GridComponent,
     CardComponent,
     AsyncPipe,
+    JsonPipe,
     MatGridListModule,
     MatMenuModule,
     MatIconModule,
@@ -40,26 +42,34 @@ import { User } from '@models/user';
   styleUrl: './articles.component.scss',
 })
 export class ArticlesComponent extends GridContainerDirective {
-  articles$: Observable<Article[]> = this._articlesService.$articles;
+  articles$: Observable<Article[]> = this._articlesService.articles$;
   user$: Observable<User | null> = this.authService.user$;
-  
+
   constructor(
+    protected override title: Title,
+    protected override meta: Meta,
+    @Inject(DOCUMENT) protected override document: Document,
     private _articlesService: ArticlesService,
     private authService: AuthService,
     private router: Router
   ) {
-    super();
+    super(title, meta, document);
   }
 
   createArticle() {
-    this.router.navigate(['create-article']);
+    this.router.navigate(['articles', 'create']);
   }
-
+  goToArticle(articleId: string) {
+    this.router.navigate([articleId]);
+  }
   override ngOnInit(): void {
     super.ngOnInit();
     this._articlesService.getArticles(
+      { page: 1, pageSize: 10 },
       (error: Error) => {},
-      (response: any) => {}
+      (response: any) => {
+        console.log(`get iarticles`, response);
+      }
     );
   }
 
