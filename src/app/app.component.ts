@@ -40,13 +40,11 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
 })
 export class AppComponent extends PageDirective {
   constructor(
-    protected override title: Title,
-    protected override meta: Meta,
     appRef: ApplicationRef,
     zone: NgZone,
     private swUpdate: SwUpdate
   ) {
-    super(title, meta);
+    super();
     this.$subscription$.add(
       appRef.isStable.pipe(first((stable) => stable)).subscribe((t) =>
         zone.run(() => {

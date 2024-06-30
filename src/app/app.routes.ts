@@ -3,10 +3,11 @@ import { Routes } from '@angular/router';
 import { AtikaDominicComponent } from '@pages/atika-dominic/atika-dominic.component';
 import { ArticlesComponent } from '@pages/articles/articles.component';
 import { ArticleComponent } from '@pages/article/article.component';
+import { ViewArticleComponent } from '@pages/view-article/view-article.component';
+import { AboutAtikaDominicComponent } from '@pages/about-atika-dominic/about-atika-dominic.component';
 
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { ViewArticleComponent } from '@pages/view-article/view-article.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: `info`, component: AtikaDominicComponent },
+      { path: `author-config`, component: AboutAtikaDominicComponent },
       {
         path: `articles`,
         children: [

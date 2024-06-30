@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export interface BaseEntity {
-  id?: string;
+  id: string;
   create_date?: Date;
   update_date?: Date;
   creator: User;

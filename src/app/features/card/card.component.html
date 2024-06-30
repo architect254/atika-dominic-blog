@@ -1,23 +1,23 @@
-<mat-card class="card">
-  <img
-    mat-card-image
-    [src]="article?.header_image"
-    [alt]="'image of ' + article?.title"
-  />
-
+<mat-card class="example-card" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>
-      <h2 class="mat-headline-medium">{{ article?.title }}</h2>
-    </mat-card-title>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{ article.title }} </mat-card-title>
+    <mat-card-subtitle>{{ article.keywords }}</mat-card-subtitle>
   </mat-card-header>
-
+  <!-- <img
+    mat-card-image
+    src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+    alt="Photo of a Shiba Inu"
+  /> -->
   <mat-card-content>
-    <article>
-      <p>{{ article?.description | slice : 0 : 500 }}</p>
-    </article>
+    <p>
+      {{ article.description | slice : 0 : 500 }}
+    </p>
   </mat-card-content>
-
-  <mat-card-actions> Like | Share </mat-card-actions>
-
-  <mat-card-footer>{{ article?.creator?.name }}</mat-card-footer>
+  <mat-card-actions>
+    <button mat-button>LIKE</button>
+    <button mat-button (click)="gotoArticle(article.id)">VIEW</button>
+    <button mat-button (click)="editArticle(article.id)">EDIT</button>
+    <button mat-button (click)="deleteArticle(article.id)">DELETE</button>
+  </mat-card-actions>
 </mat-card>

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AuthService } from '@core/services/auth.service';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ import { User } from '@models/user';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     AsyncPipe,
   ],
 })
@@ -28,11 +30,18 @@ export class LayoutComponent implements OnInit {
   title: string = ``;
   user$: Observable<User | null> = this.authService.user$;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   login() {
     this.authService.openDialog();
+  }
+
+  logOut() {
+    this.authService.signOut();
+  }
+  goToAuthorConfig() {
+    this.router.navigate(['author-config'])
   }
 }

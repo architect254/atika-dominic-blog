@@ -18,13 +18,20 @@
   [style.height]="gridHeight + 'px'"
   [style.width]="gridWidth + 'px'"
 >
-  <mat-grid-list cols="3" [rowHeight]="gridHeight / 2">
+  <mat-grid-list
+    cols="2"
+    [rowHeight]="600"
+    [style.height]="gridHeight + 'px'"
+    [style.width]="gridWidth + 'px'"
+  >
     <mat-grid-tile
       *cdkVirtualFor="let article of articles$ | async"
       [colspan]="1"
       [rowspan]="1"
     >
-      <adb-card [article]="article" (click)="goToArticle(article.id)"></adb-card>
+      <adb-card
+        [article]="article"
+      ></adb-card>
     </mat-grid-tile>
   </mat-grid-list>
 </cdk-virtual-scroll-viewport>

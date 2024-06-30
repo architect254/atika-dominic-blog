@@ -42,18 +42,20 @@ import { Article } from '@models/article';
 export class ArticleComponent {
   action = ``;
 
+  article = this.articleService.$selectedArticle.value;
+
   articleForm: FormGroup = this._fb.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required],
-    keywords: ['', Validators.required],
-    content: ['', Validators.required],
+    title: [this.article.title, Validators.required],
+    description: [this.article.description, Validators.required],
+    keywords: [this.article.keywords, Validators.required],
+    content: [this.article.content, Validators.required],
   });
 
   readonly keywords = signal(['Blog Article']);
 
   header_image = new FormControl();
 
-  HEADER_IMAGE_UPLOAD_URL = `http://atikadominic.com/api/articles/:id/upload-header_image`;
+  HEADER_IMAGE_UPLOAD_URL = `http://atikadominic.com/api/upload-article_image`;
   uploader: FileUploader;
   hasBaseDropZoneOver: boolean;
   hasAnotherDropZoneOver: boolean;
@@ -64,7 +66,7 @@ export class ArticleComponent {
     private articleService: ArticlesService,
     private announcer: LiveAnnouncer,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {
     this.uploader = new FileUploader({
       url: this.HEADER_IMAGE_UPLOAD_URL,
@@ -73,7 +75,7 @@ export class ArticleComponent {
       formatDataFunction: async (item: any) => {
         return new Promise((resolve, reject) => {
           resolve({
-            name: item._file.name,
+            name: `article_image-${new Date() + item._file.extname}`,
             length: item._file.size,
             contentType: item._file.type,
             date: new Date(),
@@ -93,7 +95,16 @@ export class ArticleComponent {
   ngOnInit() {
     this.articleService.$subscriptions$.add(
       this.route.paramMap.subscribe((params: ParamMap) => {
-        this.action = params.get(`id`) ?? `Create`;
+        this.action = params.get(`id`) ? `Update` : `Create`;
+        this.articleService.getArticleById(
+          params.get(`id`) ?? ``,
+          (e) => {
+            console.error(`MESSAGE`, e);
+          },
+          (r) => {
+            console.log(`MESSAGE`, r);
+          }
+        );
       })
     );
   }
@@ -139,6 +150,7 @@ export class ArticleComponent {
   }
 
   submit() {
+    this.uploader.uploadAll();
     const keywords = (this.articleForm.value.keywords as string[])
       .map((keyword, index) => {
         return `${keyword}${
@@ -155,11 +167,6 @@ export class ArticleComponent {
         console.error(`Article Error`, error);
       },
       (article: Article) => {
-        this.HEADER_IMAGE_UPLOAD_URL = this.HEADER_IMAGE_UPLOAD_URL.replace(
-          `:id`,
-          article?.id ?? ``
-        );
-        this.uploader.uploadAll();
         this.router.navigate(['/']);
       }
     );

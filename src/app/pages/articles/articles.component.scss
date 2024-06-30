@@ -4,6 +4,10 @@
     align-items: baseline;
 }
 
-adb-card:hover {
-    cursor: pointer;
+adb-card {
+    margin: 16px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }

@@ -1,0 +1,16 @@
+.file-control {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: var(--mdc-filled-text-field-container-color);
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(199, 197, 197);
+    }
+}
+
+button {
+    float: right;
+}

@@ -33,7 +33,28 @@
         Login
       </a>
       } @else {
-      <span class="username">{{ (user$ | async)?.name }}</span>
+      <a
+        mat-button
+        color="primary"
+        class="account-menu-button"
+        [matMenuTriggerFor]="profileMenu"
+        aria-label="Profile menu"
+      >
+        <mat-icon fontIcon="account_circle"></mat-icon
+        >{{ (user$ | async)?.name }}
+      </a>
+
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item (click)="goToAuthorConfig()">
+          <mat-icon>person</mat-icon>
+          <span>About {{ (user$ | async)?.name }}</span>
+        </button>
+        <button mat-menu-item (click)="logOut()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+
       }
     </nav>
   </mat-toolbar-row>

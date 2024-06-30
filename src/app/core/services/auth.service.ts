@@ -36,12 +36,10 @@ export class AuthService extends APIService {
   private jwtHelper = new JwtHelperService();
 
   constructor(
-    protected override _http: HttpClient,
-    protected override snackBar: MatSnackBar,
     private readonly dialog: MatDialog,
     private storage: StorageService
   ) {
-    super(_http, snackBar);
+    super();
   }
 
   public get user$(): Observable<User | null> {

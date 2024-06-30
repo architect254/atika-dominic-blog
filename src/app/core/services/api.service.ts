@@ -17,6 +17,9 @@ export class APIService implements OnDestroy {
 
   protected endpoint = `${this.BASE_URL}`;
 
+  protected _http = inject(HttpClient);
+  protected snackBar = inject(MatSnackBar);
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -25,7 +28,7 @@ export class APIService implements OnDestroy {
 
   $subscriptions$: Subscription = new Subscription();
 
-  constructor(protected _http: HttpClient, protected snackBar: MatSnackBar) {}
+  constructor() {}
 
   ngOnDestroy(): void {
     if (this.$subscriptions$) {

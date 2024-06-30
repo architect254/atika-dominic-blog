@@ -46,14 +46,11 @@ export class ArticlesComponent extends GridContainerDirective {
   user$: Observable<User | null> = this.authService.user$;
 
   constructor(
-    protected override title: Title,
-    protected override meta: Meta,
-    @Inject(DOCUMENT) protected override document: Document,
     private _articlesService: ArticlesService,
     private authService: AuthService,
     private router: Router
   ) {
-    super(title, meta, document);
+    super();
   }
 
   createArticle() {
