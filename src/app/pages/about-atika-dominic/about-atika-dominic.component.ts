@@ -51,6 +51,7 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
     youtube_profile: ['', Validators.required],
   });
 
+  fileToUpload!: FileList;
   imageHash = `profile_image-${new Date().getUTCMilliseconds()}`;
 
   constructor(
@@ -82,7 +83,9 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
     );
   }
 
-  onFileSelected(event: Event) {
+  onFileSelected(event: any) {
+    this.fileToUpload = event?.target?.files[0];
+
     console.log(`FILE SELECTED`, event);
     const selectedFile = { name: `` };
 
@@ -91,7 +94,7 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
   }
 
   submit() {
-    console.log(`FILE AUT`,this.authorForm.value)
+    console.log(`FILE AUT`, this.authorForm.value);
   }
 
   override ngOnInit(): void {

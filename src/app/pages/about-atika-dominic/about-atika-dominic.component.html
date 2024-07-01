@@ -29,8 +29,8 @@
     <input
       type="file"
       formControlName="profile_image"
-      (file)="onFileSelected($event)"
-      (input)="onFileSelected($event)"
+      accept=".csv,text/plain, text/csv, text/html"
+      (change)="onFileSelected($event)"
       id="header_image"
       class="file-control"
       placeholder="Upload image"
