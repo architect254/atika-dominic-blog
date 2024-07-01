@@ -4,8 +4,15 @@
     align-items: baseline;
 }
 
+::ng-deep {
+    .cdk-virtual-scroll-content-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
+
 adb-card {
-    margin: 16px;
 
     &:hover {
         cursor: pointer;

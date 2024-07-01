@@ -61,44 +61,37 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
   ) {
     super();
 
-      const fileName = `${this.imageHash}.${this.authorForm
-        .get(`profile_image`)
-        ?.value.split(`.`)
-        .pop()}`;
+    const fileName = `${this.imageHash}.${this.authorForm
+      .get(`profile_image`)
+      ?.value.split(`.`)
+      .pop()}`;
 
-      const payload: AuthorPayload = {
-        ...this.authorForm.value,
-        profile_image: fileName,
-      };
+    const payload: AuthorPayload = {
+      ...this.authorForm.value,
+      profile_image: fileName,
+    };
 
-      this.authorService.setAuthor(
-        payload,
-        (r) => {
-          console.log(`RRRRRR`, r);
-        },
-        (e) => {
-          console.log(`EEEE`, e);
-        }
-      );
+    this.authorService.setAuthor(
+      payload,
+      (r) => {
+        console.log(`RRRRRR`, r);
+      },
+      (e) => {
+        console.log(`EEEE`, e);
+      }
+    );
   }
 
   onFileSelected(event: Event) {
-    const selectedFile = event.target['files'][0];
+    console.log(`FILE SELECTED`, event);
+    const selectedFile = { name: `` };
 
     const formData = new FormData();
-    formData.append('file', selectedFile, selectedFile.name);
-
-    this.http
-      .post<any>(apiUrl, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      .subscribe(
-        (response) => {},
-        (error) => {}
-      );
+    formData.append('file', new Blob(), selectedFile.name);
   }
 
   submit() {
+    console.log(`FILE AUT`,this.authorForm.value)
   }
 
   override ngOnInit(): void {

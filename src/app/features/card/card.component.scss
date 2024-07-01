@@ -24,7 +24,8 @@
                 color: lighten(black, 45%);
                 text-transform: uppercase;
             }
-            .value{
+
+            .value {
                 text-align: center;
             }
         }
@@ -36,14 +37,23 @@
         .mat-mdc-card {
             border-radius: calc(var(--mdc-elevated-card-container-shape) - 8px);
         }
+
+        .mat-mdc-card-header,
+        .mat-mdc-card-content {
+            padding: 16px;
+        }
     }
 }
+
 .example-card {
     max-width: 400px;
-  }
-  
-  .example-header-image {
+}
+
+.example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
-  }
-  
+}
+
+.card-image {
+    max-width: 400px;
+}
