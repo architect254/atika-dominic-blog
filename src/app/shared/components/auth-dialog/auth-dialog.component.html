@@ -87,6 +87,7 @@
     type="submit"
     (click)="submit()"
     cdkFocusInitial
+    [disabled]="!authForm.valid"
   >
     <mat-icon matPrefix>login</mat-icon>{{ action$ | async }}
   </button>

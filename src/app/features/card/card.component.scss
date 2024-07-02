@@ -6,29 +6,7 @@
 
     &:hover {
         @include mat.elevation(4);
-    }
-
-    .title {
-        margin-top: 16px;
-        text-transform: capitalize;
-    }
-
-    .info {
-        .article {
-            display: flex;
-            flex: 1;
-            flex-wrap: wrap;
-            gap: 16px;
-
-            .label {
-                color: lighten(black, 45%);
-                text-transform: uppercase;
-            }
-
-            .value {
-                text-align: center;
-            }
-        }
+        cursor: pointer;
     }
 }
 
@@ -43,17 +21,4 @@
             padding: 16px;
         }
     }
-}
-
-.example-card {
-    max-width: 400px;
-}
-
-.example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-}
-
-.card-image {
-    max-width: 400px;
 }

@@ -22,8 +22,10 @@ import { MatInputModule } from '@angular/material/input';
 
 import { GridContainerDirective } from '@shared/directives/grid-container/grid-container.directive';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthorPayload } from '@models/constants';
 import { AuthorService } from '@core/services/author.service';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { AuthorPayload } from '@models/author';
 
 @Component({
   selector: 'adb-about-atika-dominic',
@@ -51,50 +53,89 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
     youtube_profile: ['', Validators.required],
   });
 
-  fileToUpload!: FileList;
-  imageHash = `profile_image-${new Date().getUTCMilliseconds()}`;
+  fileToUpload: File | null = null; // Variable to store file
+  fileName: string = ``;
+  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial'; // Variable to store file status
+  progress: number = 0;
+
+  imageHash = `profile_image-${Date.now()}`;
 
   constructor(
     private _fb: FormBuilder,
     private authorService: AuthorService,
+    private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router
   ) {
     super();
-
-    const fileName = `${this.imageHash}.${this.authorForm
-      .get(`profile_image`)
-      ?.value.split(`.`)
-      .pop()}`;
-
-    const payload: AuthorPayload = {
-      ...this.authorForm.value,
-      profile_image: fileName,
-    };
-
-    this.authorService.setAuthor(
-      payload,
-      (r) => {
-        console.log(`RRRRRR`, r);
-      },
-      (e) => {
-        console.log(`EEEE`, e);
-      }
-    );
   }
 
   onFileSelected(event: any) {
     this.fileToUpload = event?.target?.files[0];
 
-    console.log(`FILE SELECTED`, event);
-    const selectedFile = { name: `` };
+    if (this.fileToUpload) {
+      this.status = 'initial';
+    }
+  }
 
-    const formData = new FormData();
-    formData.append('file', new Blob(), selectedFile.name);
+  upload() {
+    if (this.fileToUpload) {
+      this.fileName =
+        this.imageHash +
+        '.' +
+        this.fileToUpload.name.split('?')[0].split('.').pop();
+
+      console.log(`FILENAME`, this.fileName);
+
+      const formData = new FormData();
+
+      formData.append('profile_image', this.fileToUpload, this.fileName);
+
+      const upload$ = this.http.post(
+        'http://atikadominic.com/api/upload-profile_image',
+        formData,
+        {
+          reportProgress: true,
+          observe: 'events',
+        }
+      );
+
+      this.status = 'uploading';
+
+      this.authorService.$subscriptions$.add(
+        upload$.subscribe({
+          next: (event: HttpEvent<any>) => {
+            if (event.type === HttpEventType.UploadProgress && event.total) {
+              this.progress = Math.round((100 * event.loaded) / event.total);
+            } else if (event.type === HttpEventType.Response) {
+              this.status = 'success';
+              event.body;
+            }
+          },
+          error: (error: any) => {
+            this.status = 'fail';
+            return throwError(() => error);
+          },
+        })
+      );
+    }
   }
 
   submit() {
-    console.log(`FILE AUT`, this.authorForm.value);
+    this.upload();
+
+    this.authorService.setAuthor(
+      {
+        ...this.authorForm.value,
+        profile_image: this.fileName,
+      } as AuthorPayload,
+      (e) => {
+        console.error(`AUTHOR DATA ERROR`, e);
+      },
+      (r) => {
+        console.info(`AUTHOR DATA INFO`, r);
+      }
+    );
   }
 
   override ngOnInit(): void {

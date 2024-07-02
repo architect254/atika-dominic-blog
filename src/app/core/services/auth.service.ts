@@ -12,7 +12,7 @@ import { APIService } from './api.service';
 
 import { User } from '@models/user';
 import { STORAGE_KEYS } from '@models/constants';
-import { SignInPayload, SignUpPayload, JwtPayload } from '@models/auth.payload';
+import { SignInPayload, SignUpPayload, JwtPayload } from '@models/auth';
 
 import { AuthDialogComponent } from '@shared/components/auth-dialog/auth-dialog.component';
 import { StorageService } from './storage.service';
@@ -24,16 +24,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AuthService extends APIService {
   protected override endpoint: string = `${this.BASE_URL}`;
 
-  accessToken =
-    this.storage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ??
-    this.storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-
-  private tokenSubject: BehaviorSubject<any> = new BehaviorSubject(
-    this.accessToken
-  );
-  public token$: Observable<any> = this.tokenSubject.asObservable();
-
   private jwtHelper = new JwtHelperService();
+
+  accessToken = this.storage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ?? ``;
+
+  private $token: BehaviorSubject<any> = new BehaviorSubject(this.accessToken);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -42,7 +37,19 @@ export class AuthService extends APIService {
     super();
   }
 
-  public get user$(): Observable<User | null> {
+  get token$(): Observable<any> {
+    return this.$token.asObservable();
+  }
+
+  get isAuthenticated$(): Observable<boolean> {
+    return this.token$.pipe(
+      map((token) => {
+        return !this.jwtHelper.isTokenExpired(token);
+      })
+    );
+  }
+
+  get user$(): Observable<User | null> {
     return this.token$.pipe(
       map((token) => {
         if (token) {
@@ -50,14 +57,6 @@ export class AuthService extends APIService {
           return payload.user;
         }
         return null;
-      })
-    );
-  }
-
-  public isAuthenticated(): Observable<boolean> {
-    return this.token$.pipe(
-      map((token) => {
-        return !this.jwtHelper.isTokenExpired(token);
       })
     );
   }
@@ -92,8 +91,8 @@ export class AuthService extends APIService {
         .pipe(
           tap({
             next: ({ accessToken }) => {
+              this.$token.next(accessToken);
               this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-              this.tokenSubject.next(accessToken);
             },
           })
         )
@@ -108,8 +107,8 @@ export class AuthService extends APIService {
     );
   }
   signOut() {
+    this.$token.next(null);
     this.storage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-    this.tokenSubject.next(null);
   }
 
   resetPassword(payload: any) {

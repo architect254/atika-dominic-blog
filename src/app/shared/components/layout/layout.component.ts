@@ -28,11 +28,17 @@ import { User } from '@models/user';
 })
 export class LayoutComponent implements OnInit {
   title: string = ``;
+
+  isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
   user$: Observable<User | null> = this.authService.user$;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
+
+  goToAuthorConfig() {
+    this.router.navigate(['author-config']);
+  }
 
   login() {
     this.authService.openDialog();
@@ -40,8 +46,5 @@ export class LayoutComponent implements OnInit {
 
   logOut() {
     this.authService.signOut();
-  }
-  goToAuthorConfig() {
-    this.router.navigate(['author-config'])
   }
 }

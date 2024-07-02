@@ -1,5 +1,5 @@
 <nav id="secondary-nav" class="article-nav">
-  <h1 class="mat-h1">Articles</h1>
+  <h1 class="mat-h1">Blog Articles</h1>
   @if ((user$ | async)) {
   <a mat-button (click)="createArticle()"
     ><mat-icon
@@ -16,7 +16,7 @@
   minBufferPx="200"
   maxBufferPx="400"
   [style.height]="gridHeight + 'px'"
-  [style.width]="gridWidth + 'px'" class="grid"
+  class="grid"
 >
   @for (article of articles$ | async; track article) {
   <adb-card [article]="article"></adb-card>

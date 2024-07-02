@@ -98,7 +98,7 @@
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
   }"
   ></editor>
-  <div><button mat-flat-button type="submit">Save article</button></div>
+  <div><button mat-flat-button type="submit" [disabled]="!articleForm.valid">Save article</button></div>
 </form>
 
 <!-- 'body {

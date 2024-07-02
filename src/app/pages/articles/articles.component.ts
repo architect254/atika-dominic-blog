@@ -63,9 +63,11 @@ export class ArticlesComponent extends GridContainerDirective {
     super.ngOnInit();
     this._articlesService.getArticles(
       { page: 1, pageSize: 10 },
-      (error: Error) => {},
+      (error: Error) => {
+        console.error(`GET ARTICLES ERROR`, error);
+      },
       (response: any) => {
-        console.log(`get iarticles`, response);
+        console.error(`GET ARTICLES RES`, response);
       }
     );
   }

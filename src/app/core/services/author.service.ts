@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { APIService } from './api.service';
-import { AuthorPayload } from '@models/constants';
+import { Author, AuthorPayload } from '@models/author';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,22 +9,30 @@ import { AuthorPayload } from '@models/constants';
 export class AuthorService extends APIService {
   protected override endpoint: string = `${this.BASE_URL}`;
 
+  $author: BehaviorSubject<Author | null> = new BehaviorSubject<Author | null>(
+    null
+  );
+
   constructor() {
     super();
   }
 
+  get author$() {
+    return this.$author.asObservable();
+  }
+
   getAuthor(
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
+    onError?: (error: Error) => void,
+    onSuccess?: (response: any) => void
   ) {
-    const endpoint = `${this.endpoint}`;
     this.$subscriptions$.add(
-      this._http.get(endpoint, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess(res);
+      this._http.get<Author>(this.endpoint, this.httpOptions).subscribe(
+        (author) => {
+          this.$author.next(author);
+          onSuccess?.(author);
         },
         (error) => {
-          onError(error);
+          onError?.(error);
         }
       )
     );
@@ -31,17 +40,16 @@ export class AuthorService extends APIService {
 
   setAuthor(
     author: AuthorPayload,
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
+    onError?: (error: Error) => void,
+    onSuccess?: (response: any) => void
   ) {
-    const endpoint = `${this.endpoint}/${author.id ?? ''}`;
     this.$subscriptions$.add(
-      this._http.post(endpoint, author, this.httpOptions).subscribe(
+      this._http.post(this.endpoint, author, this.httpOptions).subscribe(
         (res) => {
-          onSuccess(res);
+          onSuccess?.(res);
         },
         (error) => {
-          onError(error);
+          onError?.(error);
         }
       )
     );

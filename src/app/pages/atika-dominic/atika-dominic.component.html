@@ -1,6 +1,16 @@
 <section class="atika-info">
   <article id="about-atika">
-    <h1>About Atika Dominic</h1>
+    <h2 class="about-intro">{{ (author$ | async)?.about_title }}</h2>
+    <p class="about-content">
+      <img
+        [src]="(author$ | async)?.profile_image"
+        [alt]="(author$ | async)?.about_title"
+      />
+      {{ (author$ | async)?.about_title }}
+    </p>
   </article>
-  <article id="contact-atika"><h1>Contact Atika Dominic</h1></article>
+  <article id="contact-atika">
+    <h2 class="contact-intro">{{ (author$ | async)?.contact_title }}</h2>
+    <p class="contact-content">{{ (author$ | async)?.contact_description }}</p>
+  </article>
 </section>

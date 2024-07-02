@@ -3,11 +3,11 @@
 <form [formGroup]="authorForm" (submit)="submit()">
   <div class="form-controls">
     <mat-form-field>
-      <mat-label>Author Intro/Title</mat-label>
+      <mat-label>Author Intro</mat-label>
       <input
         matInput
         formControlName="about_title"
-        placeholder="Article Title..."
+        placeholder="About Author Intro..."
       />
       <mat-icon matPrefix>title</mat-icon>
     </mat-form-field>
@@ -21,27 +21,38 @@
         cdkAutosizeMinRows="1"
         cdkAutosizeMaxRows="5"
         formControlName="about_description"
-        placeholder="About Author..."
+        placeholder="About Author Content..."
       ></textarea>
       <mat-icon matPrefix>article</mat-icon>
     </mat-form-field>
 
     <input
+      #fileUpload
       type="file"
       formControlName="profile_image"
-      accept=".csv,text/plain, text/csv, text/html"
       (change)="onFileSelected($event)"
       id="header_image"
       class="file-control"
       placeholder="Upload image"
       required
     />
+
+    <div class="mat-typography" *ngIf="fileToUpload">
+      <section [ngSwitch]="status">
+        <p *ngSwitchCase="'uploading'">
+          ⏳ Uploading...{{ progress | percent }}%
+        </p>
+        <p *ngSwitchCase="'success'">✅ Done!</p>
+        <p *ngSwitchCase="'fail'">❌ Error!</p>
+        <p *ngSwitchDefault>😶 Waiting to upload...</p>
+      </section>
+    </div>
     <mat-form-field>
-      <mat-label>Contact Author Intro/Title</mat-label>
+      <mat-label>Contact Author Intro</mat-label>
       <input
         matInput
         formControlName="contact_title"
-        placeholder="Article Title..."
+        placeholder="Contact Author Intro..."
       />
       <mat-icon matPrefix>title</mat-icon>
     </mat-form-field>
@@ -55,7 +66,7 @@
         cdkAutosizeMinRows="1"
         cdkAutosizeMaxRows="5"
         formControlName="contact_description"
-        placeholder="Contact Author..."
+        placeholder="Contact Author Content..."
       ></textarea>
       <mat-icon matPrefix>article</mat-icon>
     </mat-form-field>
@@ -65,7 +76,7 @@
       <input
         matInput
         formControlName="contact_email"
-        placeholder="Article Title..."
+        placeholder="atika@atikadominic.com"
       />
       <mat-icon matPrefix>alternate_email</mat-icon>
     </mat-form-field>
@@ -75,7 +86,7 @@
       <input
         matInput
         formControlName="facebook_profile"
-        placeholder="Article Title..."
+        placeholder="facebook.com/profile"
       />
       <mat-icon matPrefix>link</mat-icon>
     </mat-form-field>
@@ -85,7 +96,7 @@
       <input
         matInput
         formControlName="twitter_profile"
-        placeholder="Article Title..."
+        placeholder="twitter.com/profile"
       />
       <mat-icon matPrefix>link</mat-icon>
     </mat-form-field>
@@ -95,11 +106,11 @@
       <input
         matInput
         formControlName="youtube_profile"
-        placeholder="Article Title..."
+        placeholder="youtube.com/profile"
       />
       <mat-icon matPrefix>link</mat-icon>
     </mat-form-field>
   </div>
 
-  <div><button mat-flat-button type="submit">Save info</button></div>
+  <div><button mat-flat-button type="submit"  [disabled]="!authorForm.valid">Save info</button></div>
 </form>
