@@ -20,8 +20,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { APIService } from '@core/services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { User } from '@models/user';
-import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'adb-articles',
@@ -43,7 +41,7 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class ArticlesComponent extends GridContainerDirective {
   articles$: Observable<Article[]> = this._articlesService.articles$;
-  user$: Observable<User | null> = this.authService.user$;
+  isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
 
   constructor(
     private _articlesService: ArticlesService,
@@ -53,23 +51,48 @@ export class ArticlesComponent extends GridContainerDirective {
     super();
   }
 
+  getArticles() {
+    this.$subscription$.add(
+      this._articlesService.getArticles(
+        { page: 1, pageSize: 10 },
+        (error: Error) => {
+          console.error(`GET ARTICLES ERROR`, error);
+        },
+        (response: any) => {
+          console.error(`GET ARTICLES RES`, response);
+        }
+      )
+    );
+  }
+
   createArticle() {
     this.router.navigate(['articles', 'create']);
+  }
+
+  editArticle(id: string) {
+    this.router.navigate(['articles', id]);
+  }
+  onDelete(id: string) {
+    this.$subscription$.unsubscribe();
+    this.$subscription$.add(
+      this._articlesService.deleteArticle(
+        id,
+        (e) => {
+          console.log(`DELETED ARTICLE ERROR`);
+        },
+        (r) => {
+          console.log(`DELETED ARTICLE`);
+          this.getArticles();
+        }
+      )
+    );
   }
   goToArticle(articleId: string) {
     this.router.navigate([articleId]);
   }
   override ngOnInit(): void {
     super.ngOnInit();
-    this._articlesService.getArticles(
-      { page: 1, pageSize: 10 },
-      (error: Error) => {
-        console.error(`GET ARTICLES ERROR`, error);
-      },
-      (response: any) => {
-        console.error(`GET ARTICLES RES`, response);
-      }
-    );
+    this.getArticles();
   }
 
   override setDefaultMetaAndTitle(): void {}

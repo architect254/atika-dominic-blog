@@ -20,6 +20,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { API_URL } from 'app/app.component';
 import { Article } from '@models/article';
+import { PageDirective } from '@shared/directives/page/page.directive';
 @Component({
   selector: 'adb-article',
   standalone: true,
@@ -39,7 +40,7 @@ import { Article } from '@models/article';
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
 })
-export class ArticleComponent {
+export class ArticleComponent extends PageDirective {
   action = ``;
 
   article = this.articleService.$selectedArticle.value;
@@ -56,10 +57,6 @@ export class ArticleComponent {
   header_image = new FormControl();
 
   HEADER_IMAGE_UPLOAD_URL = `http://atikadominic.com/api/upload-article_image`;
-  uploader: FileUploader;
-  hasBaseDropZoneOver: boolean;
-  hasAnotherDropZoneOver: boolean;
-  response: string;
 
   constructor(
     private _fb: FormBuilder,
@@ -68,32 +65,16 @@ export class ArticleComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.uploader = new FileUploader({
-      url: this.HEADER_IMAGE_UPLOAD_URL,
-      disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
-      formatDataFunctionIsAsync: true,
-      formatDataFunction: async (item: any) => {
-        return new Promise((resolve, reject) => {
-          resolve({
-            name: `article_image-${new Date() + item._file.extname}`,
-            length: item._file.size,
-            contentType: item._file.type,
-            date: new Date(),
-          });
-        });
-      },
-    });
-
-    this.hasBaseDropZoneOver = false;
-    this.hasAnotherDropZoneOver = false;
-
-    this.response = '';
-
-    this.uploader.response.subscribe((res) => (this.response = res));
+    super();
   }
 
-  ngOnInit() {
-    this.articleService.$subscriptions$.add(
+  override ngOnInit() {
+    super.ngOnInit();
+    this.getArticle();
+  }
+
+  getArticle() {
+    this.$subscription$.add(
       this.route.paramMap.subscribe((params: ParamMap) => {
         this.action = params.get(`id`) ? `Update` : `Create`;
         this.articleService.getArticleById(
@@ -137,20 +118,11 @@ export class ArticleComponent {
     event.chipInput!.clear();
   }
 
-  public fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
-  }
-
-  public fileOverAnother(e: any): void {
-    this.hasAnotherDropZoneOver = e;
-  }
-
-  chooseImage(uploadInpt: any) {
-    uploadInpt.click();
-  }
-
   submit() {
-    this.uploader.uploadAll();
+    this.createArticle();
+  }
+
+  createArticle() {
     const keywords = (this.articleForm.value.keywords as string[])
       .map((keyword, index) => {
         return `${keyword}${
@@ -161,14 +133,20 @@ export class ArticleComponent {
         return prev + curr;
       });
 
-    this.articleService.createArticle(
-      { ...this.articleForm.value, keywords },
-      (error: Error) => {
-        console.error(`Article Error`, error);
-      },
-      (article: Article) => {
-        this.router.navigate(['/']);
-      }
+    this.$subscription$.add(
+      this.articleService.createArticle(
+        { ...this.articleForm.value, keywords },
+        (error: Error) => {
+          console.error(`Article Error`, error);
+        },
+        (article: Article) => {
+          this.router.navigate(['/']);
+        }
+      )
     );
   }
+
+  override setDefaultMetaAndTitle(): void {}
+  override setTwitterCardMeta(): void {}
+  override setFacebookOpenGraphMeta(): void {}
 }

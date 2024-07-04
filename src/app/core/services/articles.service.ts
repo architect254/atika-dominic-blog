@@ -38,18 +38,18 @@ export class ArticlesService extends APIService {
     onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/`;
-    this.$subscriptions$.add(
-      this._http.post<Article>(endpoint, payload, this.httpOptions).subscribe(
+    return this._http
+      .post<Article>(endpoint, payload, this.httpOptions)
+      .subscribe(
         (article) => {
           this.$selectedArticle.next(article);
-          this.snackBar.open(`Article created successfully`)
+          this.snackBar.open(`Article created successfully`);
           onSuccess?.(article);
         },
         (error: Error) => {
           onError?.(error);
         }
-      )
-    );
+      );
   }
 
   updateArticle(
@@ -59,16 +59,14 @@ export class ArticlesService extends APIService {
     onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/${id}`;
-    this.$subscriptions$.add(
-      this._http.put<Article>(endpoint, this.httpOptions).subscribe(
-        (article) => {
-          this.$selectedArticle.next(article);
-          onSuccess?.(article);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.put<Article>(endpoint, this.httpOptions).subscribe(
+      (article) => {
+        this.$selectedArticle.next(article);
+        onSuccess?.(article);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -79,16 +77,14 @@ export class ArticlesService extends APIService {
     onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/${id}/upload-header-image`;
-    this.$subscriptions$.add(
-      this._http.put<Article>(endpoint, this.httpOptions).subscribe(
-        (article) => {
-          this.$selectedArticle.next(article);
-          onSuccess?.(article);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.put<Article>(endpoint, this.httpOptions).subscribe(
+      (article) => {
+        this.$selectedArticle.next(article);
+        onSuccess?.(article);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -96,7 +92,7 @@ export class ArticlesService extends APIService {
     { page, pageSize }: PaginationParams,
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
-  ): void {
+  ) {
     const endpoint = `${this.endpoint}/`;
 
     let queryParams = new HttpParams()
@@ -105,16 +101,14 @@ export class ArticlesService extends APIService {
 
     const options = { ...this.httpOptions, params: queryParams };
 
-    this.$subscriptions$.add(
-      this._http.get<Article[]>(endpoint, options).subscribe(
-        (articles) => {
-          this.$articles.next(articles);
-          onSuccess?.(articles);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.get<Article[]>(endpoint, options).subscribe(
+      (articles) => {
+        this.$articles.next(articles);
+        onSuccess?.(articles);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -122,36 +116,32 @@ export class ArticlesService extends APIService {
     id: string,
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
-  ): void {
+  ) {
     const endpoint = `${this.endpoint}/${id}`;
-    this.$subscriptions$.add(
-      this._http.get<Article>(endpoint, this.httpOptions).subscribe(
-        (article) => {
-          this.$selectedArticle.next(article);
-          onSuccess?.(article);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.get<Article>(endpoint, this.httpOptions).subscribe(
+      (article) => {
+        this.$selectedArticle.next(article);
+        onSuccess?.(article);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
   deleteArticle(
     id: string,
     onError?: (error: Error) => void,
-    onSuccess?: () => void
+    onSuccess?: (res: any) => void
   ) {
     const endpoint = `${this.endpoint}/${id}`;
-    this.$subscriptions$.add(
-      this._http.delete<void>(endpoint, this.httpOptions).subscribe(
-        () => {
-          onSuccess?.();
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.delete<void>(endpoint, this.httpOptions).subscribe(
+      (res) => {
+        onSuccess?.(res);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -161,35 +151,31 @@ export class ArticlesService extends APIService {
     onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/comments`;
-    this.$subscriptions$.add(
-      this._http.post<Comment>(endpoint, this.httpOptions).subscribe(
-        (comment) => {
-          this.$selectedComment.next(comment);
-          onSuccess?.(comment);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.post<Comment>(endpoint, this.httpOptions).subscribe(
+      (comment) => {
+        this.$selectedComment.next(comment);
+        onSuccess?.(comment);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
   getComments(
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
-  ): void {
+  ) {
     const endpoint = `${this.endpoint}/comments`;
 
-    this.$subscriptions$.add(
-      this._http.get<Comment[]>(endpoint, this.httpOptions).subscribe(
-        (comments) => {
-          this.$comments.next(comments);
-          onSuccess?.(comments);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.get<Comment[]>(endpoint, this.httpOptions).subscribe(
+      (comments) => {
+        this.$comments.next(comments);
+        onSuccess?.(comments);
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -199,15 +185,13 @@ export class ArticlesService extends APIService {
     onSuccess?: () => void
   ) {
     const endpoint = `${this.endpoint}/comments/${id}`;
-    this.$subscriptions$.add(
-      this._http.delete<void>(endpoint, this.httpOptions).subscribe(
-        () => {
-          onSuccess?.();
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.delete<void>(endpoint, this.httpOptions).subscribe(
+      () => {
+        onSuccess?.();
+      },
+      (error: Error) => {
+        onError?.(error);
+      }
     );
   }
 }

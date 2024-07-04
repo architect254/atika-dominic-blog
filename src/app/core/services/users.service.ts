@@ -16,15 +16,13 @@ export class UsersService extends APIService {
     onError: (error: Error) => void
   ) {
     const endpoint = `${this.endpoint}`;
-    this.$subscriptions$.add(
-      this._http.get(endpoint, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess(res);
-        },
-        (error) => {
-          onError(error);
-        }
-      )
+    return this._http.get(endpoint, this.httpOptions).subscribe(
+      (res) => {
+        onSuccess(res);
+      },
+      (error) => {
+        onError(error);
+      }
     );
   }
 
@@ -34,15 +32,13 @@ export class UsersService extends APIService {
     onError: (error: Error) => void
   ) {
     const endpoint = `${this.endpoint}/${id}`;
-    this.$subscriptions$.add(
-      this._http.get(endpoint, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess(res);
-        },
-        (error) => {
-          onError(error);
-        }
-      )
+    return this._http.get(endpoint, this.httpOptions).subscribe(
+      (res) => {
+        onSuccess(res);
+      },
+      (error) => {
+        onError(error);
+      }
     );
   }
 }

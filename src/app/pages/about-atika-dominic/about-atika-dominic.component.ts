@@ -63,9 +63,7 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
   constructor(
     private _fb: FormBuilder,
     private authorService: AuthorService,
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router
+    private http: HttpClient
   ) {
     super();
   }
@@ -78,14 +76,12 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
     }
   }
 
-  upload() {
+  uploadProfileImage() {
     if (this.fileToUpload) {
       this.fileName =
         this.imageHash +
         '.' +
         this.fileToUpload.name.split('?')[0].split('.').pop();
-
-      console.log(`FILENAME`, this.fileName);
 
       const formData = new FormData();
 
@@ -101,8 +97,7 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
       );
 
       this.status = 'uploading';
-
-      this.authorService.$subscriptions$.add(
+      this.$subscription$.add(
         upload$.subscribe({
           next: (event: HttpEvent<any>) => {
             if (event.type === HttpEventType.UploadProgress && event.total) {
@@ -122,31 +117,42 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
   }
 
   submit() {
-    this.upload();
+    this.uploadProfileImage();
+    this.setAuthorDetails();
+  }
 
-    this.authorService.setAuthor(
-      {
-        ...this.authorForm.value,
-        profile_image: this.fileName,
-      } as AuthorPayload,
-      (e) => {
-        console.error(`AUTHOR DATA ERROR`, e);
-      },
-      (r) => {
-        console.info(`AUTHOR DATA INFO`, r);
-      }
+  setAuthorDetails() {
+    this.$subscription$.add(
+      this.authorService.setAuthor(
+        {
+          ...this.authorForm.value,
+          profile_image: this.fileName,
+        } as AuthorPayload,
+        (e) => {
+          console.error(`AUTHOR DATA ERROR`, e);
+        },
+        (r) => {
+          console.info(`AUTHOR DATA INFO`, r);
+        }
+      )
     );
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
-    this.authorService.getAuthor(
-      (r) => {
-        console.log(`AUTHOR`);
-      },
-      (e) => {
-        console.log(`ERROR`, e);
-      }
+    this.getAuthor();
+  }
+
+  getAuthor() {
+    this.$subscription$.add(
+      this.authorService.getAuthor(
+        (r) => {
+          console.log(`AUTHOR`);
+        },
+        (e) => {
+          console.log(`ERROR`, e);
+        }
+      )
     );
   }
 

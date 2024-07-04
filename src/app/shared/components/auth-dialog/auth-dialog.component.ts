@@ -117,29 +117,29 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
           payLoad,
           () => {
             this.loading = false;
-            window.location.reload();
           },
           () => {
             this.loading = false;
+            this.dialogRef.close();
           }
         )
       : this._authService.signUp(
           payLoad,
           () => {
             this.loading = false;
+          },
+          () => {
+            this.loading = false;
             this._authService.signIn(
               payLoad,
               () => {
                 this.loading = false;
-                window.location.reload();
               },
               () => {
                 this.loading = false;
+                this.dialogRef.close();
               }
             );
-          },
-          () => {
-            this.loading = false;
           }
         );
   }

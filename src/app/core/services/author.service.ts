@@ -25,16 +25,14 @@ export class AuthorService extends APIService {
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
   ) {
-    this.$subscriptions$.add(
-      this._http.get<Author>(this.endpoint, this.httpOptions).subscribe(
-        (author) => {
-          this.$author.next(author);
-          onSuccess?.(author);
-        },
-        (error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.get<Author>(this.endpoint, this.httpOptions).subscribe(
+      (author) => {
+        this.$author.next(author);
+        onSuccess?.(author);
+      },
+      (error) => {
+        onError?.(error);
+      }
     );
   }
 
@@ -43,15 +41,13 @@ export class AuthorService extends APIService {
     onError?: (error: Error) => void,
     onSuccess?: (response: any) => void
   ) {
-    this.$subscriptions$.add(
-      this._http.post(this.endpoint, author, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess?.(res);
-        },
-        (error) => {
-          onError?.(error);
-        }
-      )
+    return this._http.post(this.endpoint, author, this.httpOptions).subscribe(
+      (res) => {
+        onSuccess?.(res);
+      },
+      (error) => {
+        onError?.(error);
+      }
     );
   }
 }

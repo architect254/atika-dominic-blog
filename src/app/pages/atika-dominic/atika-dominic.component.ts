@@ -18,13 +18,19 @@ export class AtikaDominicComponent extends GridContainerDirective {
   }
   override ngOnInit(): void {
     super.ngOnInit();
-    this.authorService.getAuthor(
-      (e) => {
-        console.error(`GET AUTHOR`, e);
-      },
-      (r) => {
-        console.log(`GET AUTHOR`);
-      }
+    this.getAuthor();
+  }
+
+  getAuthor() {
+    this.$subscription$.add(
+      this.authorService.getAuthor(
+        (e) => {
+          console.error(`GET AUTHOR`, e);
+        },
+        (r) => {
+          console.log(`GET AUTHOR`);
+        }
+      )
     );
   }
 

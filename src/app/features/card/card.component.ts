@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,21 +17,21 @@ import { Router } from '@angular/router';
 })
 export class CardComponent {
   @Input() article!: Article;
+  @Output() deleteArticle = new EventEmitter<string>();
+  @Output() goToArticle = new EventEmitter<string>();
+  @Output() editArtice = new EventEmitter<string>();
 
-  constructor(
-    private articleService: ArticlesService,
-    private router: Router
-  ) {}
+  constructor() {}
 
-  gotoArticle(id: string) {
-    this.router.navigate([id]);
+  doGotoArticle(id: string) {
+    this.goToArticle.emit(id);
   }
 
-  editArticle(id: string) {
-    this.router.navigate([`articles`, id]);
+  onEditArticle(id: string) {
+    this.editArtice.emit(id);
   }
 
-  deleteArticle(id: string) {
-    this.articleService.deleteArticle(id);
+  onDeleteArticle(id: string) {
+    this.deleteArticle.emit(id);
   }
 }

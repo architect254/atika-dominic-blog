@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class APIService implements OnDestroy {
+export class APIService {
   readonly #API_URL = `http://atikadominic.com`;
   readonly BASE_URL = `${this.#API_URL}/api`;
 
@@ -26,13 +26,5 @@ export class APIService implements OnDestroy {
     }),
   };
 
-  $subscriptions$: Subscription = new Subscription();
-
   constructor() {}
-
-  ngOnDestroy(): void {
-    if (this.$subscriptions$) {
-      this.$subscriptions$.unsubscribe();
-    }
-  }
 }

@@ -1,6 +1,6 @@
 <nav id="secondary-nav" class="article-nav">
   <h1 class="mat-h1">Blog Articles</h1>
-  @if ((user$ | async)) {
+  @if ((isAuthenticated$ | async)) {
   <a mat-button (click)="createArticle()"
     ><mat-icon
       aria-hidden="false"
@@ -19,7 +19,7 @@
   class="grid"
 >
   @for (article of articles$ | async; track article) {
-  <adb-card [article]="article"></adb-card>
+  <adb-card [article]="article" (goToArticle)="goToArticle($event)" (editArtice)="editArticle($event)" (deleteArticle)="onDelete($event)"></adb-card>
 
   }
 </cdk-virtual-scroll-viewport>

@@ -63,48 +63,44 @@ export class AuthService extends APIService {
 
   signUp(
     payload: SignUpPayload,
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
+    onError?: (error: Error) => void,
+    onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/sign-up`;
-    this.$subscriptions$.add(
-      this._http.post(endpoint, payload, this.httpOptions).subscribe(
-        (res) => {
-          onSuccess(res);
-        },
-        (error) => {
-          onError(error);
-        }
-      )
+    return this._http.post(endpoint, payload, this.httpOptions).subscribe(
+      (res) => {
+        onSuccess?.(res);
+      },
+      (error) => {
+        onError?.(error);
+      }
     );
   }
 
   signIn(
     payload: SignInPayload,
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
+    onError?: (error: Error) => void,
+    onSuccess?: (response: any) => void
   ) {
     const endpoint = `${this.endpoint}/sign-in`;
-    this.$subscriptions$.add(
-      this._http
-        .post<{ accessToken: string }>(endpoint, payload, this.httpOptions)
-        .pipe(
-          tap({
-            next: ({ accessToken }) => {
-              this.$token.next(accessToken);
-              this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-            },
-          })
-        )
-        .subscribe({
-          next: (res) => {
-            onSuccess(res);
-          },
-          error: (error) => {
-            onError(error);
+    return this._http
+      .post<{ accessToken: string }>(endpoint, payload, this.httpOptions)
+      .pipe(
+        tap({
+          next: ({ accessToken }) => {
+            this.$token.next(accessToken);
+            this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
           },
         })
-    );
+      )
+      .subscribe({
+        next: (res) => {
+          onSuccess?.(res);
+        },
+        error: (error) => {
+          onError?.(error);
+        },
+      });
   }
   signOut() {
     this.$token.next(null);
