@@ -1,9 +1,9 @@
 <section class="atika-info">
   <article id="about-atika">
-    <h2 class="about-intro">{{ (author$ | async)?.about_title }}</h2>
+    1<h2 class="about-intro">{{ (author$ | async)?.about_title }}</h2>
     <p class="about-content">
       <img
-        [src]="(author$ | async)?.profile_image"
+        [src]="'http://atikadominic.com/uploads/' + (author$ | async)?.profile_image"
         [alt]="(author$ | async)?.about_title"
       />
       {{ (author$ | async)?.about_title }}
