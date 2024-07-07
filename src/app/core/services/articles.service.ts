@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Observer, tap } from 'rxjs';
 
 import { Article, ArticlePayload } from '@models/article';
 
@@ -17,81 +17,64 @@ export class ArticlesService extends APIService {
   protected override endpoint: string = `${this.BASE_URL}/articles`;
 
   $articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
-  $selectedArticle: BehaviorSubject<Article> = new BehaviorSubject<Article>(
-    {} as Article
-  );
+  $selectedArticle: BehaviorSubject<Article | null> =
+    new BehaviorSubject<Article | null>(null);
   $comments: BehaviorSubject<Comment[]> = new BehaviorSubject<Comment[]>([]);
-  $selectedComment: BehaviorSubject<Comment> = new BehaviorSubject<Comment>(
-    {} as Comment
-  );
+  $selectedComment: BehaviorSubject<Comment | null> =
+    new BehaviorSubject<Comment | null>(null);
   get articles$(): Observable<Article[]> {
     return this.$articles.asObservable();
   }
 
-  get selectedArticle$(): Observable<Article> {
+  get selectedArticle$(): Observable<Article | null> {
     return this.$selectedArticle.asObservable();
   }
 
-  createArticle(
-    payload: ArticlePayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  createArticle(payload: ArticlePayload, observer: Observer<Article>) {
     const endpoint = `${this.endpoint}/`;
     return this._http
       .post<Article>(endpoint, payload, this.httpOptions)
-      .subscribe(
-        (article) => {
-          this.$selectedArticle.next(article);
-          this.snackBar.open(`Article created successfully`);
-          onSuccess?.(article);
-        },
-        (error: Error) => {
-          onError?.(error);
-        }
-      );
+      .subscribe(observer);
   }
 
   updateArticle(
     id: string,
     payload: ArticlePayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
+    observer: Observer<Article>
   ) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http.put<Article>(endpoint, this.httpOptions).subscribe(
-      (article) => {
-        this.$selectedArticle.next(article);
-        onSuccess?.(article);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .put<Article>(endpoint, this.httpOptions)
+      .subscribe(observer);
   }
 
   uploadArticleHeaderImage(
     id: string,
     payload: Article,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
+    observer: Observer<Article>
   ) {
     const endpoint = `${this.endpoint}/${id}/upload-header-image`;
-    return this._http.put<Article>(endpoint, this.httpOptions).subscribe(
-      (article) => {
-        this.$selectedArticle.next(article);
-        onSuccess?.(article);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .put<Article>(endpoint, this.httpOptions)
+      .pipe(
+        tap({
+          next: (article) => {
+            this.$selectedArticle.next(article);
+          },
+          error: (err: any) => {
+            this.$selectedArticle.next(null);
+          },
+          complete: () => {
+            console.info(`GET ARTICLES COMPLETE`);
+          },
+        })
+      )
+      .subscribe(observer);
   }
 
   getArticles(
     { page, pageSize }: PaginationParams,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
+    observer: Observer<Article[]>
   ) {
     const endpoint = `${this.endpoint}/`;
 
@@ -101,97 +84,72 @@ export class ArticlesService extends APIService {
 
     const options = { ...this.httpOptions, params: queryParams };
 
-    return this._http.get<Article[]>(endpoint, options).subscribe(
-      (articles) => {
-        this.$articles.next(articles);
-        onSuccess?.(articles);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .get<Article[]>(endpoint, options)
+      .pipe(
+        tap({
+          next: (articles) => {
+            this.$articles.next(articles);
+          },
+          error: (err: any) => {
+            this.$articles.next([]);
+          },
+          complete: () => {
+            console.info(`GET ARTICLES COMPLETE`);
+          },
+        })
+      )
+      .subscribe(observer);
   }
 
-  getArticleById(
-    id: string,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  getArticleById(id: string | null, observer: Observer<Article>) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http.get<Article>(endpoint, this.httpOptions).subscribe(
-      (article) => {
-        this.$selectedArticle.next(article);
-        onSuccess?.(article);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .get<Article>(endpoint, this.httpOptions)
+      .pipe(
+        tap({
+          next: (article) => {
+            this.$selectedArticle.next(article);
+          },
+          error: (err: any) => {
+            this.$selectedArticle.next(null);
+          },
+          complete: () => {
+            console.info(`GET ARTICLES COMPLETE`);
+          },
+        })
+      )
+      .subscribe(observer);
   }
 
-  deleteArticle(
-    id: string,
-    onError?: (error: Error) => void,
-    onSuccess?: (res: any) => void
-  ) {
+  deleteArticle(id: string, observer: Observer<void>) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http.delete<void>(endpoint, this.httpOptions).subscribe(
-      (res) => {
-        onSuccess?.(res);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    console.log(`DELETE ARTICLE 1`);
+
+    return this._http
+      .delete<void>(endpoint, this.httpOptions)
+      .subscribe(observer);
   }
 
-  createComment(
-    payload: CommentPayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  createComment(payload: CommentPayload, observer: Observer<Comment>) {
     const endpoint = `${this.endpoint}/comments`;
-    return this._http.post<Comment>(endpoint, this.httpOptions).subscribe(
-      (comment) => {
-        this.$selectedComment.next(comment);
-        onSuccess?.(comment);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .post<Comment>(endpoint, this.httpOptions)
+      .subscribe(observer);
   }
 
-  getComments(
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  getComments(observer: Observer<Comment[]>) {
     const endpoint = `${this.endpoint}/comments`;
 
-    return this._http.get<Comment[]>(endpoint, this.httpOptions).subscribe(
-      (comments) => {
-        this.$comments.next(comments);
-        onSuccess?.(comments);
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .get<Comment[]>(endpoint, this.httpOptions)
+      .subscribe(observer);
   }
 
-  deleteComment(
-    id: string,
-    onError?: (error: Error) => void,
-    onSuccess?: () => void
-  ) {
+  deleteComment(id: string, observer: Observer<void>) {
     const endpoint = `${this.endpoint}/comments/${id}`;
-    return this._http.delete<void>(endpoint, this.httpOptions).subscribe(
-      () => {
-        onSuccess?.();
-      },
-      (error: Error) => {
-        onError?.(error);
-      }
-    );
+    return this._http
+      .delete<void>(endpoint, this.httpOptions)
+      .subscribe(observer);
   }
 }

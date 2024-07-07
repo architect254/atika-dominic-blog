@@ -20,6 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { APIService } from '@core/services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { error } from 'console';
 
 @Component({
   selector: 'adb-articles',
@@ -40,8 +41,8 @@ import { AuthService } from '@core/services/auth.service';
   styleUrl: './articles.component.scss',
 })
 export class ArticlesComponent extends GridContainerDirective {
-  articles$: Observable<Article[]> = this._articlesService.articles$;
-  isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
+  articles$!: Observable<Article[]>;
+  isAuthenticated$!: Observable<boolean>;
 
   constructor(
     private _articlesService: ArticlesService,
@@ -49,17 +50,24 @@ export class ArticlesComponent extends GridContainerDirective {
     private router: Router
   ) {
     super();
+    this.articles$ = this._articlesService.articles$;
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
   }
 
   getArticles() {
     this.$subscription$.add(
       this._articlesService.getArticles(
         { page: 1, pageSize: 10 },
-        (error: Error) => {
-          console.error(`GET ARTICLES ERROR`, error);
-        },
-        (response: any) => {
-          console.error(`GET ARTICLES RES`, response);
+        {
+          next: (articles) => {
+            console.log(`GET ARTICLE SUCCESS`, articles);
+          },
+          error: (err: any) => {
+            console.error(`GET ARTICLES`, error);
+          },
+          complete: () => {
+            console.info(`GET ARTICLES COMPLETE`);
+          },
         }
       )
     );
@@ -73,18 +81,20 @@ export class ArticlesComponent extends GridContainerDirective {
     this.router.navigate(['articles', id]);
   }
   onDelete(id: string) {
-    this.$subscription$.unsubscribe();
+    console.log(`DELETE ARTICLE`);
     this.$subscription$.add(
-      this._articlesService.deleteArticle(
-        id,
-        (e) => {
-          console.log(`DELETED ARTICLE ERROR`);
-        },
-        (r) => {
-          console.log(`DELETED ARTICLE`);
+      this._articlesService.deleteArticle(id, {
+        next: (articles) => {
+          console.log(`DELETE ARTICLE SUCCESS`, articles);
           this.getArticles();
-        }
-      )
+        },
+        error: (err: any) => {
+          console.error(`DELETE ARTICLES`, error);
+        },
+        complete: () => {
+          console.info(`DELETE ARTICLES COMPLETE`);
+        },
+      })
     );
   }
   goToArticle(articleId: string) {

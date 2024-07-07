@@ -15,12 +15,13 @@ import { PageDirective } from '@shared/directives/page/page.directive';
   styleUrl: './view-article.component.scss',
 })
 export class ViewArticleComponent extends PageDirective {
-  article$: Observable<Article> = this.articleService.selectedArticle$;
+  article$!: Observable<Article | null>;
   constructor(
     private articleService: ArticlesService,
     private route: ActivatedRoute
   ) {
     super();
+    this.article$ = this.articleService.selectedArticle$;
   }
 
   override ngOnInit() {
@@ -31,7 +32,17 @@ export class ViewArticleComponent extends PageDirective {
   getArticle() {
     this.$subscription$.add(
       this.route.paramMap.subscribe((params: ParamMap) => {
-        this.articleService.getArticleById(params.get(`id`) ?? ``);
+        this.articleService.getArticleById(params.get(`id`) ?? ``, {
+          next: (articles) => {
+            console.log(`GET ARTICLE SUCCESS`, articles);
+          },
+          error: (err: any) => {
+            console.error(`GET ARTICLES`, err);
+          },
+          complete: () => {
+            console.info(`GET ARTICLES COMPLETE`);
+          },
+        });
       })
     );
   }

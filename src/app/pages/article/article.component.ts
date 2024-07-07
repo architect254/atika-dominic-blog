@@ -1,4 +1,4 @@
-import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { FileUploader, FileUploadModule } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -17,10 +17,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ArticlesService } from '@core/services/articles.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { API_URL } from 'app/app.component';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Article } from '@models/article';
 import { PageDirective } from '@shared/directives/page/page.directive';
+
 @Component({
   selector: 'adb-article',
   standalone: true,
@@ -33,6 +33,7 @@ import { PageDirective } from '@shared/directives/page/page.directive';
     MatInputModule,
     MatChipsModule,
     MatButtonModule,
+    AsyncPipe,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
@@ -41,51 +42,68 @@ import { PageDirective } from '@shared/directives/page/page.directive';
   styleUrl: './article.component.scss',
 })
 export class ArticleComponent extends PageDirective {
-  action = ``;
-
-  article = this.articleService.$selectedArticle.value;
-
-  articleForm: FormGroup = this._fb.group({
-    title: [this.article.title, Validators.required],
-    description: [this.article.description, Validators.required],
-    keywords: [this.article.keywords, Validators.required],
-    content: [this.article.content, Validators.required],
-  });
-
-  readonly keywords = signal(['Blog Article']);
-
+  action!: string;
+  article!: Article | null;
+  articleId!: string | null;
+  articleForm!: FormGroup;
   header_image = new FormControl();
 
   HEADER_IMAGE_UPLOAD_URL = `http://atikadominic.com/api/upload-article_image`;
 
+  readonly keywords = signal(['Blog Article']);
+
+  asyncPipe = inject(AsyncPipe);
   constructor(
     private _fb: FormBuilder,
     private articleService: ArticlesService,
     private announcer: LiveAnnouncer,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {
     super();
   }
 
   override ngOnInit() {
     super.ngOnInit();
+    this.getArticleId();
     this.getArticle();
+
+    this.article = this.asyncPipe.transform(
+      this.articleService.$selectedArticle
+    );
+
+    this.buildForm();
+  }
+
+  buildForm() {
+    this.articleForm = this._fb.group({
+      title: [this.article?.title, Validators.required],
+      description: [this.article?.description, Validators.required],
+      keywords: [this.article?.keywords, Validators.required],
+      content: [this.article?.content, Validators.required],
+    });
+  }
+
+  getArticleId() {
+    this.$subscription$.add(
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.articleId = params.get(`id`);
+        this.action = this.articleId ? `Update` : `Create`;
+      })
+    );
   }
 
   getArticle() {
     this.$subscription$.add(
-      this.route.paramMap.subscribe((params: ParamMap) => {
-        this.action = params.get(`id`) ? `Update` : `Create`;
-        this.articleService.getArticleById(
-          params.get(`id`) ?? ``,
-          (e) => {
-            console.error(`MESSAGE`, e);
-          },
-          (r) => {
-            console.log(`MESSAGE`, r);
-          }
-        );
+      this.articleService.getArticleById(this.articleId, {
+        next: (articles) => {
+          console.log(`GET ARTICLE SUCCESS`, articles);
+        },
+        error: (err: any) => {
+          console.error(`GET ARTICLES`, err);
+        },
+        complete: () => {
+          console.info(`GET ARTICLES COMPLETE`);
+        },
       })
     );
   }
@@ -136,11 +154,16 @@ export class ArticleComponent extends PageDirective {
     this.$subscription$.add(
       this.articleService.createArticle(
         { ...this.articleForm.value, keywords },
-        (error: Error) => {
-          console.error(`Article Error`, error);
-        },
-        (article: Article) => {
-          this.router.navigate(['/']);
+        {
+          next: (articles) => {
+            console.log(`CREATE ARTICLE SUCCESS`, articles);
+          },
+          error: (err: any) => {
+            console.error(`CREATE ARTICLES`, err);
+          },
+          complete: () => {
+            console.info(`CREATE ARTICLES COMPLETE`);
+          },
         }
       )
     );
