@@ -1,13 +1,20 @@
 .primary-nav {
-    &,.navigation-btns {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .navigation-btns{
-        width: fit-content;
-        gap: 16px;
-        align-items: center;
+
+    &,
+    .navigation-btns {
+
+        &,
+        .feature-btns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
     }
 
+}
+
+.feature-btns {
+    padding-right: 80px;
 }

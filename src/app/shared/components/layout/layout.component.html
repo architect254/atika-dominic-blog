@@ -1,11 +1,36 @@
 <mat-toolbar id="toolbar">
   <mat-toolbar-row class="container primary-nav">
-    <header class="site-header" routerLink="/">Atika Dominic</header>
-
-    <nav class="navigation-btns">
+    <nav class="feature-btns">
+      <header class="site-header" routerLink="/">Atika Dominic</header>
       <a
         mat-flat-button
+        routerLink="/"
+        routerLinkActive="acive"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="About Atika Dominic"
+          fontIcon="library_books"
+        ></mat-icon>
+        Read Articles
+      </a>
+      <a
+        mat-flat-button
+        color="tertiary"
+        routerLink="articles"
+        routerLinkActive="acive"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="About Atika Dominic"
+          fontIcon="menu_book"
+        ></mat-icon>
+        View Books
+      </a>
+    </nav>
+    <nav class="navigation-btns">
+      <a
+        mat-stroked-button
         routerLink="/info"
+        color="primary"
         fragment="about-atika"
         routerLinkOptions="{anchorScrolling:'enabled'}"
         ><mat-icon
@@ -15,7 +40,7 @@
         ></mat-icon>
         About Atika
       </a>
-      <a mat-flat-button routerLink="/info" fragment="contact-atika"
+      <a mat-stroked-button routerLink="/info" fragment="contact-atika" color="tertiary"
         ><mat-icon
           aria-hidden="false"
           aria-label="Contact Atika Dominic"
@@ -25,7 +50,7 @@
       </a>
       @if (isAuthenticated$ | async) {
       <a
-        mat-button
+        mat-stroked-button
         color="primary"
         class="account-menu-button"
         [matMenuTriggerFor]="profileMenu"
