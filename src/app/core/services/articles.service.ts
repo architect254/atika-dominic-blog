@@ -19,9 +19,15 @@ export class ArticlesService extends APIService {
   $articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
   $selectedArticle: BehaviorSubject<Article | null> =
     new BehaviorSubject<Article | null>(null);
+
   $comments: BehaviorSubject<Comment[]> = new BehaviorSubject<Comment[]>([]);
   $selectedComment: BehaviorSubject<Comment | null> =
     new BehaviorSubject<Comment | null>(null);
+
+  constructor() {
+    super();
+  }
+
   get articles$(): Observable<Article[]> {
     return this.$articles.asObservable();
   }
@@ -31,7 +37,7 @@ export class ArticlesService extends APIService {
   }
 
   createArticle(payload: ArticlePayload, observer: Observer<Article>) {
-    const endpoint = `${this.endpoint}/`;
+    const endpoint = `${this.endpoint}`;
     return this._http
       .post<Article>(endpoint, payload, this.httpOptions)
       .subscribe(observer);
@@ -76,13 +82,13 @@ export class ArticlesService extends APIService {
     { page, pageSize }: PaginationParams,
     observer: Observer<Article[]>
   ) {
-    const endpoint = `${this.endpoint}/`;
+    const endpoint = `${this.endpoint}`;
 
-    let queryParams = new HttpParams()
+    let params = new HttpParams()
       .set(`page`, page)
       .append(`pageSize`, pageSize);
 
-    const options = { ...this.httpOptions, params: queryParams };
+    const options = { ...this.httpOptions, params };
 
     return this._http
       .get<Article[]>(endpoint, options)

@@ -1,14 +1,13 @@
 <mat-toolbar id="toolbar">
+  <mat-toolbar-row class="container">
+    <header class="site-header" routerLink="/">Atika Dominic</header>
+  </mat-toolbar-row>
   <mat-toolbar-row class="container primary-nav">
     <nav class="feature-btns">
-      <header class="site-header" routerLink="/">Atika Dominic</header>
-      <a
-        mat-flat-button
-        routerLink="/"
-        routerLinkActive="acive"
+      <a mat-flat-button routerLink="/" routerLinkActive="acive"
         ><mat-icon
           aria-hidden="false"
-          aria-label="About Atika Dominic"
+          aria-label="Read Atika Dominic's articles"
           fontIcon="library_books"
         ></mat-icon>
         Read Articles
@@ -20,7 +19,7 @@
         routerLinkActive="acive"
         ><mat-icon
           aria-hidden="false"
-          aria-label="About Atika Dominic"
+          aria-label="View Atika Dominic's books"
           fontIcon="menu_book"
         ></mat-icon>
         View Books
@@ -40,7 +39,11 @@
         ></mat-icon>
         About Atika
       </a>
-      <a mat-stroked-button routerLink="/info" fragment="contact-atika" color="tertiary"
+      <a
+        mat-stroked-button
+        routerLink="/info"
+        fragment="contact-atika"
+        color="tertiary"
         ><mat-icon
           aria-hidden="false"
           aria-label="Contact Atika Dominic"
@@ -50,11 +53,11 @@
       </a>
       @if (isAuthenticated$ | async) {
       <a
-        mat-stroked-button
+        mat-button
         color="primary"
         class="account-menu-button"
         [matMenuTriggerFor]="profileMenu"
-        aria-label="Profile menu"
+        aria-label="User's profile menu"
       >
         <mat-icon fontIcon="account_circle"></mat-icon
         >{{ (user$ | async)?.name }}
@@ -75,7 +78,7 @@
       <a mat-button (click)="login()"
         ><mat-icon
           aria-hidden="false"
-          aria-label="Contact Atika Dominic"
+          aria-label="Login to the site"
           fontIcon="login"
         ></mat-icon>
         Login
@@ -87,3 +90,5 @@
 <section id="container" class="container">
   <router-outlet></router-outlet>
 </section>
+<adb-footer></adb-footer>
+

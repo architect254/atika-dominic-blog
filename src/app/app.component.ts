@@ -14,6 +14,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { first } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
@@ -28,6 +29,7 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
     RouterOutlet,
     ScrollingModule,
     MatSnackBarModule,
+    MatProgressBarModule,
     AppShellComponent,
   ],
   providers: [

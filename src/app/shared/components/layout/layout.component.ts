@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@core/services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '@models/user';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'layout',
@@ -24,6 +25,7 @@ import { User } from '@models/user';
     MatIconModule,
     MatMenuModule,
     AsyncPipe,
+    FooterComponent,
   ],
 })
 export class LayoutComponent implements OnInit {

@@ -1,44 +1,40 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin color($yow-hood-theme) {
+@mixin color($atika-dominic-theme) {
   .mat-toolbar {
-    background-color: mat.get-theme-color($yow-hood-theme, primary, 30);
+    background-color: mat.get-theme-color($atika-dominic-theme, primary, 30);
   }
 
-  .secondary-toolbar{
-    background-color: mat.get-theme-color($yow-hood-theme, primary, 95);
+  .site-header {
+    stroke: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
   }
 
-  .footer{
-    background-color: lighten(mat.get-theme-color($yow-hood-theme, primary, 30), 10) !important;
-    color: mat.get-theme-color($yow-hood-theme, primary, 99) !important;
-  }
-
-  .add-icon{
-    color: mat.get-theme-color($yow-hood-theme, primary, 30);
+  footer {
+    background-color: lighten(mat.get-theme-color($atika-dominic-theme, primary, 30), 10) !important;
+    color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
   }
 }
 
-@mixin typography($yow-hood-theme) {
+@mixin typography($atika-dominic-theme) {
   .app-name {
-    font: mat.get-theme-typography($yow-hood-theme, display-small, font);
-    color: mat.get-theme-color($yow-hood-theme, secondary, 100);
+    font: mat.get-theme-typography($atika-dominic-theme, display-small, font);
+    color: mat.get-theme-color($atika-dominic-theme, secondary, 100);
   }
 
-  .page-title{
-    font: mat.get-theme-typography($yow-hood-theme, headline-large, font);
-    color: mat.get-theme-color($yow-hood-theme, primary, 30);
+  .page-title {
+    font: mat.get-theme-typography($atika-dominic-theme, headline-large, font);
+    color: mat.get-theme-color($atika-dominic-theme, primary, 30);
   }
 }
 
-@mixin theme($yow-hood-theme) {
-  @if mat.theme-has($yow-hood-theme, color) {
-    @include color($yow-hood-theme);
+@mixin theme($atika-dominic-theme) {
+  @if mat.theme-has($atika-dominic-theme, color) {
+    @include color($atika-dominic-theme);
   }
 
-  @if mat.theme-has($yow-hood-theme, typography) {
-    @include typography($yow-hood-theme);
+  @if mat.theme-has($atika-dominic-theme, typography) {
+    @include typography($atika-dominic-theme);
   }
 }
 

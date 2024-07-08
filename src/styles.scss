@@ -5,13 +5,15 @@
 
 // Plus imports for other components in your app.
 
+@use './app/shared/components/layout/layout.theme' as layout;
+
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
 // Define the theme object.
-$atika-dominic-light-theme: mat.define-theme((color: (theme-type: light,
+$atika-dominic-theme: mat.define-theme((color: (theme-type: light,
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
@@ -42,12 +44,15 @@ $atika-dominic-dark-theme: mat.define-theme((color: (theme-type: dark,
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
-  @include mat.all-component-themes($atika-dominic-light-theme);
+  @include mat.all-component-themes($atika-dominic-theme);
 
   // Apply the dark theme only when the user prefers light themes.
   @media (prefers-color-scheme: dark) {
     @include mat.all-component-themes($atika-dominic-dark-theme);
   }
+
+  @include layout.color($atika-dominic-theme);
+
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

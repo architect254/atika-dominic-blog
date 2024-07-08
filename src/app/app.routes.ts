@@ -14,7 +14,6 @@ export const routes: Routes = [
     path: ``,
     component: LayoutComponent,
     children: [
-      { path: `info`, component: AtikaDominicComponent },
       { path: `author-config`, component: AboutAtikaDominicComponent },
       {
         path: `articles`,
@@ -25,7 +24,7 @@ export const routes: Routes = [
         ],
       },
       { path: `:id`, component: ViewArticleComponent },
-      { path: ``, redirectTo: `/articles`, pathMatch: `full` },
+      { path: ``, component: AtikaDominicComponent },
     ],
   },
   { path: `**`, component: NotFoundComponent },
