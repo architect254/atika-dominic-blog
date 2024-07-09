@@ -2,16 +2,12 @@
 @use '@angular/material' as mat;
 
 @mixin color($atika-dominic-theme) {
-  .mat-toolbar {
-    background-color: mat.get-theme-color($atika-dominic-theme, primary, 30);
-  }
-
   .site-header {
-    stroke: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
+    stroke: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
   }
 
   footer {
-    background-color: lighten(mat.get-theme-color($atika-dominic-theme, primary, 30), 10) !important;
+    background-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
     color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
   }
 }

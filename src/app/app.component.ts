@@ -11,7 +11,7 @@ import { SwUpdate } from '@angular/service-worker';
 
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
-import { first } from 'rxjs';
+import { first, Observable } from 'rxjs';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -19,6 +19,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AppShellComponent } from '@shared/components/app-shell/app-shell.component';
 import { PageDirective } from '@shared/directives/page/page.directive';
 import { Meta, Title } from '@angular/platform-browser';
+import { LoadingService } from '@core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 export const API_URL = new InjectionToken<string>(`API_URL`);
 
@@ -31,6 +33,7 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
     MatSnackBarModule,
     MatProgressBarModule,
     AppShellComponent,
+    AsyncPipe,
   ],
   providers: [
     JwtHelperService,
@@ -41,15 +44,19 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
   styleUrl: './app.component.scss',
 })
 export class AppComponent extends PageDirective {
+  isLoading$!: Observable<boolean>;
+
   constructor(
     appRef: ApplicationRef,
     zone: NgZone,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private loadingService: LoadingService
   ) {
     super();
     this.$subscription$.add(
       appRef.isStable.pipe(first((stable) => stable)).subscribe((t) =>
         zone.run(() => {
+          this.isLoading$ = this.loadingService.isLoading$;
           this.checkForNewVersion();
 
           // Check for new version every minute

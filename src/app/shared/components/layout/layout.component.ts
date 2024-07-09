@@ -11,6 +11,7 @@ import { AuthService } from '@core/services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '@models/user';
 import { FooterComponent } from '../footer/footer.component';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'layout',
