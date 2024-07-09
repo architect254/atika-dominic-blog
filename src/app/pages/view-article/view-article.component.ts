@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ArticlesService } from '@core/services/articles.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Article } from '@models/article';
 import { PageDirective } from '@shared/directives/page/page.directive';
 
@@ -16,12 +16,8 @@ import { PageDirective } from '@shared/directives/page/page.directive';
 })
 export class ViewArticleComponent extends PageDirective {
   article$!: Observable<Article | null>;
-  constructor(
-    private articleService: ArticlesService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private route: ActivatedRoute) {
     super();
-    this.article$ = this.articleService.selectedArticle$;
   }
 
   override ngOnInit() {
@@ -30,21 +26,7 @@ export class ViewArticleComponent extends PageDirective {
   }
 
   getArticle() {
-    this.$subscription$.add(
-      this.route.paramMap.subscribe((params: ParamMap) => {
-        this.articleService.getArticleById(params.get(`id`) ?? ``, {
-          next: (articles) => {
-            console.log(`GET ARTICLE SUCCESS`, articles);
-          },
-          error: (err: any) => {
-            console.error(`GET ARTICLES`, err);
-          },
-          complete: () => {
-            console.info(`GET ARTICLES COMPLETE`);
-          },
-        });
-      })
-    );
+    this.article$ = this.route.data.pipe(map((data) => data[`article`]));
   }
   override setDefaultMetaAndTitle(): void {}
   override setTwitterCardMeta(): void {}

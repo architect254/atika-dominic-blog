@@ -16,10 +16,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ArticlesService } from '@core/services/articles.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Article } from '@models/article';
 import { PageDirective } from '@shared/directives/page/page.directive';
+import { filter, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'adb-article',
@@ -43,8 +44,9 @@ import { PageDirective } from '@shared/directives/page/page.directive';
 })
 export class ArticleComponent extends PageDirective {
   action!: string;
-  article!: Article | null;
-  articleId!: string | null;
+
+  $article!: Observable<Article>;
+
   articleForm!: FormGroup;
   header_image = new FormControl();
 
@@ -67,44 +69,29 @@ export class ArticleComponent extends PageDirective {
     this.getArticleId();
     this.getArticle();
 
-    this.article = this.asyncPipe.transform(
-      this.articleService.$selectedArticle
-    );
-
     this.buildForm();
   }
 
   buildForm() {
     this.articleForm = this._fb.group({
-      title: [this.article?.title, Validators.required],
-      description: [this.article?.description, Validators.required],
-      keywords: [this.article?.keywords, Validators.required],
-      content: [this.article?.content, Validators.required],
+      title: [``, Validators.required],
+      description: [``, Validators.required],
+      keywords: [``, Validators.required],
+      content: [``, Validators.required],
     });
   }
 
   getArticleId() {
     this.$subscription$.add(
       this.route.paramMap.subscribe((params: ParamMap) => {
-        this.articleId = params.get(`id`);
-        this.action = this.articleId ? `Update` : `Create`;
+        this.action = params.get(`id`) ? `Update` : `Create`;
       })
     );
   }
 
   getArticle() {
-    this.$subscription$.add(
-      this.articleService.getArticleById(this.articleId, {
-        next: (articles) => {
-          console.log(`GET ARTICLE SUCCESS`, articles);
-        },
-        error: (err: any) => {
-          console.error(`GET ARTICLES`, err);
-        },
-        complete: () => {
-          console.info(`GET ARTICLES COMPLETE`);
-        },
-      })
+    this.$article = this.route.data.pipe(
+      map((data: Data) => data['article'] as Article)
     );
   }
 
@@ -152,9 +139,9 @@ export class ArticleComponent extends PageDirective {
       });
 
     this.$subscription$.add(
-      this.articleService.createArticle(
-        { ...this.articleForm.value, keywords },
-        {
+      this.articleService
+        .createArticle({ ...this.articleForm.value, keywords })
+        .subscribe({
           next: (articles) => {
             console.log(`CREATE ARTICLE SUCCESS`, articles);
           },
@@ -164,8 +151,7 @@ export class ArticleComponent extends PageDirective {
           complete: () => {
             console.info(`CREATE ARTICLES COMPLETE`);
           },
-        }
-      )
+        })
     );
   }
 

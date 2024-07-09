@@ -1,5 +1,6 @@
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   InjectionToken,
   NgZone,
@@ -27,6 +28,7 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
 @Component({
   selector: 'adb-root',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     ScrollingModule,
@@ -53,10 +55,10 @@ export class AppComponent extends PageDirective {
     private loadingService: LoadingService
   ) {
     super();
+    this.isLoading$ = this.loadingService.isLoading$;
     this.$subscription$.add(
       appRef.isStable.pipe(first((stable) => stable)).subscribe((t) =>
         zone.run(() => {
-          this.isLoading$ = this.loadingService.isLoading$;
           this.checkForNewVersion();
 
           // Check for new version every minute
@@ -66,7 +68,9 @@ export class AppComponent extends PageDirective {
     );
   }
 
-  override ngOnInit() {}
+  override ngOnInit() {
+    super.ngOnInit();
+  }
 
   checkForNewVersion = async () => {
     try {

@@ -11,34 +11,13 @@ export class UsersService extends APIService {
     super();
   }
 
-  getUsers(
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
-  ) {
+  getUsers() {
     const endpoint = `${this.endpoint}`;
-    return this._http.get(endpoint, this.httpOptions).subscribe(
-      (res) => {
-        onSuccess(res);
-      },
-      (error) => {
-        onError(error);
-      }
-    );
+    return this._http.get(endpoint, this.httpOptions);
   }
 
-  getUserByID(
-    id: string,
-    onSuccess: (response: any) => void,
-    onError: (error: Error) => void
-  ) {
+  getUserByID(id: string) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http.get(endpoint, this.httpOptions).subscribe(
-      (res) => {
-        onSuccess(res);
-      },
-      (error) => {
-        onError(error);
-      }
-    );
+    return this._http.get(endpoint, this.httpOptions);
   }
 }

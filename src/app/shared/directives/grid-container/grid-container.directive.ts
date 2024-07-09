@@ -22,7 +22,7 @@ export abstract class GridContainerDirective extends PageDirective {
     const headerHeight =
       this.document.getElementById('secondary-nav')?.offsetHeight;
     const containerWidth =
-      this.document.getElementById('container')?.offsetWidth;
+      this.document.getElementById('outlet-container')?.offsetWidth;
 
     if (toolbarHeight && headerHeight && containerWidth) {
       this.gridHeight = window.innerHeight - (toolbarHeight + headerHeight);

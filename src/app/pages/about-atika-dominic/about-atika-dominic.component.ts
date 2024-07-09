@@ -123,18 +123,12 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
 
   setAuthorDetails() {
     this.$subscription$.add(
-      this.authorService.setAuthor(
-        {
+      this.authorService
+        .setAuthor({
           ...this.authorForm.value,
           profile_image: this.fileName,
-        } as AuthorPayload,
-        (e) => {
-          console.error(`AUTHOR DATA ERROR`, e);
-        },
-        (r) => {
-          console.info(`AUTHOR DATA INFO`, r);
-        }
-      )
+        } as AuthorPayload)
+        .subscribe({ next() {}, error() {} })
     );
   }
 
@@ -145,14 +139,7 @@ export class AboutAtikaDominicComponent extends GridContainerDirective {
 
   getAuthor() {
     this.$subscription$.add(
-      this.authorService.getAuthor(
-        (r) => {
-          console.log(`AUTHOR`);
-        },
-        (e) => {
-          console.log(`ERROR`, e);
-        }
-      )
+      this.authorService.getAuthor().subscribe({ next() {}, error() {} })
     );
   }
 

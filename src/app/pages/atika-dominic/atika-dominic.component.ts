@@ -23,14 +23,7 @@ export class AtikaDominicComponent extends GridContainerDirective {
 
   getAuthor() {
     this.$subscription$.add(
-      this.authorService.getAuthor(
-        (e) => {
-          console.error(`GET AUTHOR`, e);
-        },
-        (r) => {
-          console.log(`GET AUTHOR`);
-        }
-      )
+      this.authorService.getAuthor().subscribe({ next() {}, error() {} })
     );
   }
 

@@ -28,7 +28,7 @@ import {
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { AsyncPipe, DOCUMENT } from '@angular/common';
 import { AuthService } from '@core/services/auth.service';
-import { profile } from 'console';
+import { error, log, profile } from 'console';
 
 @Component({
   selector: 'adb-auth-dialog',
@@ -112,38 +112,34 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     this.loading = true;
     const payLoad = this.authForm.getRawValue();
 
-    this.$action.value == `Login`
-      ? this._authService.signIn(
-          payLoad,
-          () => {
+    const login = () => {
+      this.$subscription$.add(
+        this._authService.signIn(payLoad).subscribe({
+          next: () => {
             this.loading = false;
           },
-          () => {
-            this.loading = false;
-            this.dialogRef.close();
-          }
-        )
-      : this._authService.signUp(
-          payLoad,
-          () => {
+          error: (error) => {
             this.loading = false;
           },
-          () => {
-            this.loading = false;
-            this._authService.signIn(
-              payLoad,
-              () => {
-                this.loading = false;
-              },
-              () => {
-                this.loading = false;
-                this.dialogRef.close();
-              }
-            );
-          }
-        );
-  }
+        })
+      );
+    };
 
+    if (this.$action.value != `Login`) {
+      this.$subscription$.add(
+        this._authService.signUp(payLoad).subscribe({
+          next: () => {
+            login();
+          },
+          error: (error) => {
+            this.loading = false;
+          },
+        })
+      );
+    } else {
+      login();
+    }
+  }
   ngOnDestroy(): void {
     this.$subscription$.unsubscribe();
   }

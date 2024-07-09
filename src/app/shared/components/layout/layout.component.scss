@@ -1,18 +1,19 @@
 .primary-nav {
-
-    &,
-    .navigation-btns {
+    .container {
 
         &,
-        .feature-btns {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+        .navigation-btns {
+
+            &,
+            .feature-btns {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
         }
     }
-
 }
 
 .feature-btns {
@@ -22,6 +23,11 @@
 .site-header {
     font-family: "Permanent Marker", cursive;
     font-weight: 400;
+    font-size: xx-large;
     font-style: normal;
-  }
-  
+}
+
+#outlet-container {
+    margin-top: 50px;
+    min-height: 100vh;
+}

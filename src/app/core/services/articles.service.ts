@@ -36,52 +36,39 @@ export class ArticlesService extends APIService {
     return this.$selectedArticle.asObservable();
   }
 
-  createArticle(payload: ArticlePayload, observer: Observer<Article>) {
+  createArticle(payload: ArticlePayload) {
     const endpoint = `${this.endpoint}`;
-    return this._http
-      .post<Article>(endpoint, payload, this.httpOptions)
-      .subscribe(observer);
+    return this._http.post<Article>(endpoint, payload, this.httpOptions);
   }
 
-  updateArticle(
-    id: string,
-    payload: ArticlePayload,
-    observer: Observer<Article>
-  ) {
+  updateArticle(id: string, payload: ArticlePayload) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http
-      .put<Article>(endpoint, this.httpOptions)
-      .subscribe(observer);
+    return this._http.put<Article>(endpoint, payload, this.httpOptions);
   }
 
-  uploadArticleHeaderImage(
-    id: string,
-    payload: Article,
-    observer: Observer<Article>
-  ) {
+  uploadArticleHeaderImage(id: string, payload: Article) {
     const endpoint = `${this.endpoint}/${id}/upload-header-image`;
-    return this._http
-      .put<Article>(endpoint, this.httpOptions)
-      .pipe(
-        tap({
-          next: (article) => {
-            this.$selectedArticle.next(article);
-          },
-          error: (err: any) => {
-            this.$selectedArticle.next(null);
-          },
-          complete: () => {
-            console.info(`GET ARTICLES COMPLETE`);
-          },
-        })
-      )
-      .subscribe(observer);
+    return this._http.put<Article>(endpoint, this.httpOptions).pipe(
+      tap({
+        next: (article) => {
+          this.$selectedArticle.next(article);
+        },
+        error: (err: any) => {
+          this.$selectedArticle.next(null);
+        },
+        complete: () => {
+          console.info(`GET ARTICLES COMPLETE`);
+        },
+      })
+    );
   }
 
-  getArticles(
-    { page, pageSize }: PaginationParams,
-    observer: Observer<Article[]>
-  ) {
+  getInitialArticles() {
+    return this.getArticles({ page: 1, pageSize: 100 });
+  }
+
+  getArticles(pagination: PaginationParams) {
+    const { page, pageSize } = pagination;
     const endpoint = `${this.endpoint}`;
 
     let params = new HttpParams()
@@ -90,72 +77,58 @@ export class ArticlesService extends APIService {
 
     const options = { ...this.httpOptions, params };
 
-    return this._http
-      .get<Article[]>(endpoint, options)
-      .pipe(
-        tap({
-          next: (articles) => {
-            this.$articles.next(articles);
-          },
-          error: (err: any) => {
-            this.$articles.next([]);
-          },
-          complete: () => {
-            console.info(`GET ARTICLES COMPLETE`);
-          },
-        })
-      )
-      .subscribe(observer);
+    return this._http.get<Article[]>(endpoint, options).pipe(
+      tap({
+        next: (articles) => {
+          this.$articles.next(articles);
+        },
+        error: (err: any) => {
+          this.$articles.next([]);
+        },
+        complete: () => {
+          console.info(`GET ARTICLES COMPLETE`);
+        },
+      })
+    );
   }
 
-  getArticleById(id: string | null, observer: Observer<Article>) {
+  getArticleById(id: string | null) {
     const endpoint = `${this.endpoint}/${id}`;
-    return this._http
-      .get<Article>(endpoint, this.httpOptions)
-      .pipe(
-        tap({
-          next: (article) => {
-            this.$selectedArticle.next(article);
-          },
-          error: (err: any) => {
-            this.$selectedArticle.next(null);
-          },
-          complete: () => {
-            console.info(`GET ARTICLES COMPLETE`);
-          },
-        })
-      )
-      .subscribe(observer);
+    return this._http.get<Article>(endpoint, this.httpOptions).pipe(
+      tap({
+        next: (article) => {
+          this.$selectedArticle.next(article);
+        },
+        error: (err: any) => {
+          this.$selectedArticle.next(null);
+        },
+        complete: () => {
+          console.info(`GET ARTICLES COMPLETE`);
+        },
+      })
+    );
   }
 
-  deleteArticle(id: string, observer: Observer<void>) {
+  deleteArticle(id: string) {
     const endpoint = `${this.endpoint}/${id}`;
     console.log(`DELETE ARTICLE 1`);
 
-    return this._http
-      .delete<void>(endpoint, this.httpOptions)
-      .subscribe(observer);
+    return this._http.delete<void>(endpoint, this.httpOptions);
   }
 
-  createComment(payload: CommentPayload, observer: Observer<Comment>) {
+  createComment(payload: CommentPayload) {
     const endpoint = `${this.endpoint}/comments`;
-    return this._http
-      .post<Comment>(endpoint, this.httpOptions)
-      .subscribe(observer);
+    return this._http.post<Comment>(endpoint, this.httpOptions);
   }
 
-  getComments(observer: Observer<Comment[]>) {
+  getComments() {
     const endpoint = `${this.endpoint}/comments`;
 
-    return this._http
-      .get<Comment[]>(endpoint, this.httpOptions)
-      .subscribe(observer);
+    return this._http.get<Comment[]>(endpoint, this.httpOptions);
   }
 
-  deleteComment(id: string, observer: Observer<void>) {
+  deleteComment(id: string) {
     const endpoint = `${this.endpoint}/comments/${id}`;
-    return this._http
-      .delete<void>(endpoint, this.httpOptions)
-      .subscribe(observer);
+    return this._http.delete<void>(endpoint, this.httpOptions);
   }
 }

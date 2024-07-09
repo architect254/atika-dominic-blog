@@ -2,7 +2,7 @@ import { AsyncPipe, DOCUMENT, JsonPipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 import { GridContainerDirective } from '@shared/directives/grid-container/grid-container.directive';
 
@@ -17,10 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
-import { APIService } from '@core/services/api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { error } from 'console';
 
 @Component({
   selector: 'adb-articles',
@@ -47,32 +45,16 @@ export class ArticlesComponent extends GridContainerDirective {
   constructor(
     private _articlesService: ArticlesService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     super();
-    this.articles$ = this._articlesService.articles$;
     this.isAuthenticated$ = this.authService.isAuthenticated$;
   }
 
   getArticles() {
-    this.$subscription$.add(
-      this._articlesService.getArticles(
-        { page: 1, pageSize: 10 },
-        {
-          next: (articles) => {
-            console.log(`GET ARTICLE SUCCESS`, articles);
-          },
-          error: (err: any) => {
-            console.error(`GET ARTICLES`, error);
-          },
-          complete: () => {
-            console.info(`GET ARTICLES COMPLETE`);
-          },
-        }
-      )
-    );
+    this.articles$ = this.route.data.pipe(map((data) => data[`articles`]));
   }
-
   createArticle() {
     this.router.navigate(['articles', 'create']);
   }
@@ -83,13 +65,13 @@ export class ArticlesComponent extends GridContainerDirective {
   onDelete(id: string) {
     console.log(`DELETE ARTICLE`);
     this.$subscription$.add(
-      this._articlesService.deleteArticle(id, {
+      this._articlesService.deleteArticle(id).subscribe({
         next: (articles) => {
           console.log(`DELETE ARTICLE SUCCESS`, articles);
           this.getArticles();
         },
         error: (err: any) => {
-          console.error(`DELETE ARTICLES`, error);
+          console.error(`DELETE ARTICLES`, err);
         },
         complete: () => {
           console.info(`DELETE ARTICLES COMPLETE`);

@@ -61,27 +61,12 @@ export class AuthService extends APIService {
     );
   }
 
-  signUp(
-    payload: SignUpPayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  signUp(payload: SignUpPayload) {
     const endpoint = `${this.endpoint}/sign-up`;
-    return this._http.post(endpoint, payload, this.httpOptions).subscribe(
-      (res) => {
-        onSuccess?.(res);
-      },
-      (error) => {
-        onError?.(error);
-      }
-    );
+    return this._http.post(endpoint, payload, this.httpOptions);
   }
 
-  signIn(
-    payload: SignInPayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
+  signIn(payload: SignInPayload) {
     const endpoint = `${this.endpoint}/sign-in`;
     return this._http
       .post<{ accessToken: string }>(endpoint, payload, this.httpOptions)
@@ -92,15 +77,7 @@ export class AuthService extends APIService {
             this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
           },
         })
-      )
-      .subscribe({
-        next: (res) => {
-          onSuccess?.(res);
-        },
-        error: (error) => {
-          onError?.(error);
-        },
-      });
+      );
   }
   signOut() {
     this.$token.next(null);

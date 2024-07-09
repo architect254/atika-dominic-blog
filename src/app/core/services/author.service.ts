@@ -21,33 +21,11 @@ export class AuthorService extends APIService {
     return this.$author.asObservable();
   }
 
-  getAuthor(
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
-    return this._http.get<Author>(this.endpoint, this.httpOptions).subscribe(
-      (author) => {
-        this.$author.next(author);
-        onSuccess?.(author);
-      },
-      (error) => {
-        onError?.(error);
-      }
-    );
+  getAuthor() {
+    return this._http.get<Author>(this.endpoint, this.httpOptions);
   }
 
-  setAuthor(
-    author: AuthorPayload,
-    onError?: (error: Error) => void,
-    onSuccess?: (response: any) => void
-  ) {
-    return this._http.post(this.endpoint, author, this.httpOptions).subscribe(
-      (res) => {
-        onSuccess?.(res);
-      },
-      (error) => {
-        onError?.(error);
-      }
-    );
+  setAuthor(author: AuthorPayload) {
+    return this._http.post(this.endpoint, author, this.httpOptions);
   }
 }
