@@ -5,7 +5,7 @@
   <mat-toolbar-row class="primary-nav">
     <div class="container">
       <nav class="feature-btns">
-        <a mat-flat-button routerLink="/" routerLinkActive="acive"
+        <a mat-flat-button routerLink="/articles" routerLinkActive="active"
           ><mat-icon
             aria-hidden="false"
             aria-label="Read Atika Dominic's articles"
@@ -16,8 +16,8 @@
         <a
           mat-flat-button
           color="tertiary"
-          routerLink="articles"
-          routerLinkActive="acive"
+          routerLink="/books"
+          routerLinkActive="active"
           ><mat-icon
             aria-hidden="false"
             aria-label="View Atika Dominic's books"
@@ -29,8 +29,8 @@
       <nav class="navigation-btns">
         <a
           mat-stroked-button
-          routerLink="/info"
-          color="primary"
+          routerLink="/"
+          color="author"
           fragment="about-atika"
           routerLinkOptions="{anchorScrolling:'enabled'}"
           ><mat-icon
@@ -42,9 +42,9 @@
         </a>
         <a
           mat-stroked-button
-          routerLink="/info"
+          routerLink="/"
           fragment="contact-atika"
-          color="tertiary"
+          color="author"
           ><mat-icon
             aria-hidden="false"
             aria-label="Contact Atika Dominic"
@@ -76,7 +76,7 @@
         </mat-menu>
 
         } @else {
-        <a mat-button (click)="login()"
+        <a mat-button (click)="login()" color="primary"
           ><mat-icon
             aria-hidden="false"
             aria-label="Login to the site"
@@ -92,14 +92,14 @@
 <section id="outlet-container" class="container">
   <nav id="secondary-nav" class="article-nav">
     <h1 class="mat-h1">{{ pageHeading }}</h1>
-    @if ((isAuthenticated$ | async)) {
-    <a mat-button (click)="act()"
+    @if (action && (isAuthenticated$ | async)) {
+    <a mat-button [routerLink]="action.path"
       ><mat-icon
         aria-hidden="false"
         aria-label="Create Article"
-        fontIcon="add"
+        [fontIcon]="action.icon"
       ></mat-icon>
-      {{ action }}
+      {{ action.label }}
     </a>
     }
   </nav>

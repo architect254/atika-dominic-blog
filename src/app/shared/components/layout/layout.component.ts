@@ -32,13 +32,14 @@ import { LoadingService } from '@core/services/loading.service';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    AsyncPipe,
     FooterComponent,
+    AsyncPipe,
   ],
+  providers: [AsyncPipe],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   pageHeading!: string;
-  action!: string;
+  action!: any;
 
   isAuthenticated$!: Observable<boolean>;
   user$!: Observable<User | null>;
@@ -66,16 +67,26 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   getPageTitleAndAction() {
-    if (!!this.route.firstChild?.firstChild) {
+    if (!this.route.firstChild?.firstChild) {
       this.pageHeading = ``;
-      this.action = ``;
-    } else {
+      this.action = null;
+    } else if (!this.route.firstChild.firstChild.firstChild) {
       this.$subscriptions$.add(
         this.route.firstChild?.firstChild?.data.subscribe((data: Data) => {
-          console.log(`DATA`, data, this.route.toString());
-          this.pageHeading = data['title'] ?? ``;
           this.action = data[`action`] ?? ``;
+          this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+            .routeConfig?.title as string;
         })
+      );
+    } else {
+      this.$subscriptions$.add(
+        this.route.firstChild?.firstChild?.firstChild?.data.subscribe(
+          (data: Data) => {
+            this.action = data[`action`] ?? ``;
+            this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+              .routeConfig?.title as string;
+          }
+        )
       );
     }
   }
@@ -83,7 +94,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   act() {}
 
   goToAuthorConfig() {
-    this.router.navigate(['author-config']);
+    this.router.navigate(['author-details']);
   }
 
   login() {

@@ -9,7 +9,6 @@ import { AboutAtikaDominicComponent } from '@pages/about-atika-dominic/about-ati
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { articleResolver } from '@core/resolvers/article.resolver';
-import { actionResolver } from '@core/resolvers/action.resolver';
 import { articlesResolver } from '@core/resolvers/articles.resolver';
 import { authorResolver } from '@core/resolvers/author.resolver';
 
@@ -22,7 +21,8 @@ export const routes: Routes = [
         path: `author-details`,
         component: AboutAtikaDominicComponent,
         title: `Set Author Details`,
-        resolve: { article: articleResolver, action: actionResolver },
+        resolve: { author: authorResolver },
+        data: { action: `Back`, path: `../`, icon: `back` },
       },
       {
         path: `articles`,
@@ -31,19 +31,27 @@ export const routes: Routes = [
             path: `create`,
             component: ArticleComponent,
             title: `Create Blog Article`,
-            resolve: { article: articleResolver, action: actionResolver },
+            data: { action: `Back`, path: `../`, icon: `back` },
           },
           {
             path: `:id`,
             component: ArticleComponent,
             title: `Update Blog Article`,
-            resolve: { article: articleResolver, action: actionResolver },
+            resolve: { article: articleResolver },
+            data: { action: `Back`, path: `../`, icon: `back` },
           },
           {
             path: ``,
             component: ArticlesComponent,
             title: `View Blog Articles`,
-            resolve: { articles: articlesResolver, action: actionResolver },
+            resolve: { articles: articlesResolver },
+            data: {
+              action: {
+                label: `Create Article`,
+                path: `/articles/create`,
+                icon: `add`,
+              },
+            },
           },
         ],
       },
@@ -51,13 +59,14 @@ export const routes: Routes = [
         path: `:id`,
         component: ViewArticleComponent,
         title: `View Blog Article`,
-        resolve: { articles: articleResolver, action: actionResolver },
+        resolve: { article: articleResolver },
+        data: { action: `Back`, path: `../`, icon: `back` },
       },
       {
         path: ``,
         component: AtikaDominicComponent,
         title: `About Atika Dominic`,
-        resolve: { articles: authorResolver, action: actionResolver },
+        resolve: { articles: authorResolver },
       },
     ],
   },

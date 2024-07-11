@@ -39,6 +39,7 @@ export const API_URL = new InjectionToken<string>(`API_URL`);
   ],
   providers: [
     JwtHelperService,
+    AsyncPipe,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     { provide: API_URL, useValue: `http://atikadominic.com` },
   ],

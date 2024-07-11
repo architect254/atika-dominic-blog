@@ -1,16 +1,8 @@
-<h1 class="mat-h1">{{ action }} Article</h1>
-
-@if ($article | async; as article) {
 <form [formGroup]="articleForm" (submit)="submit()">
   <div class="form-controls">
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input
-        matInput
-        formControlName="title"
-        value="article.title"
-        placeholder="Article Title..."
-      />
+      <input matInput formControlName="title" placeholder="Article Title..." />
       <mat-icon matPrefix>title</mat-icon>
     </mat-form-field>
 
@@ -19,7 +11,6 @@
       <input
         matInput
         formControlName="description"
-        value="article.description"
         placeholder="Brief article description..."
       />
       <mat-icon matPrefix>subtitles</mat-icon>
@@ -31,7 +22,6 @@
         #chipGrid
         aria-label="Enter keywords"
         formControlName="keywords"
-        value="article.keywords"
       >
         @for (keyword of keywords(); track keyword) {
         <mat-chip-row (removed)="removeKeyword(keyword)">
@@ -53,7 +43,6 @@
 
   <editor
     formControlName="content"
-    value="article.content"
     [init]="{
       base_url: '/tinymce',
       suffix: '.min',
@@ -76,7 +65,6 @@
     </button>
   </div>
 </form>
-}
 
 <!-- 'body {
   font-family: 'Roboto', sans-serif;

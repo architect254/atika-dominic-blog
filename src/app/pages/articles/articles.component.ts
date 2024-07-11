@@ -52,9 +52,17 @@ export class ArticlesComponent extends GridContainerDirective {
     this.isAuthenticated$ = this.authService.isAuthenticated$;
   }
 
-  getArticles() {
+  getInitialArticles() {
     this.articles$ = this.route.data.pipe(map((data) => data[`articles`]));
   }
+
+  getArticles() {
+    this.articles$ = this._articlesService.getArticles({
+      page: 1,
+      pageSize: 100,
+    });
+  }
+
   createArticle() {
     this.router.navigate(['articles', 'create']);
   }
@@ -62,6 +70,7 @@ export class ArticlesComponent extends GridContainerDirective {
   editArticle(id: string) {
     this.router.navigate(['articles', id]);
   }
+
   onDelete(id: string) {
     console.log(`DELETE ARTICLE`);
     this.$subscription$.add(
@@ -84,7 +93,7 @@ export class ArticlesComponent extends GridContainerDirective {
   }
   override ngOnInit(): void {
     super.ngOnInit();
-    this.getArticles();
+    this.getInitialArticles();
   }
 
   override setDefaultMetaAndTitle(): void {}

@@ -43,7 +43,7 @@ import { filter, map, Observable } from 'rxjs';
   styleUrl: './article.component.scss',
 })
 export class ArticleComponent extends PageDirective {
-  action!: string;
+  action: string = ``;
 
   $article!: Observable<Article>;
 
@@ -59,16 +59,15 @@ export class ArticleComponent extends PageDirective {
     private _fb: FormBuilder,
     private articleService: ArticlesService,
     private announcer: LiveAnnouncer,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     super();
   }
 
   override ngOnInit() {
     super.ngOnInit();
-    this.getArticleId();
     this.getArticle();
-
     this.buildForm();
   }
 
@@ -79,14 +78,8 @@ export class ArticleComponent extends PageDirective {
       keywords: [``, Validators.required],
       content: [``, Validators.required],
     });
-  }
 
-  getArticleId() {
-    this.$subscription$.add(
-      this.route.paramMap.subscribe((params: ParamMap) => {
-        this.action = params.get(`id`) ? `Update` : `Create`;
-      })
-    );
+    this.articleForm.setValue(this.asyncPipe.transform(this.$article) ?? {});
   }
 
   getArticle() {
@@ -142,8 +135,8 @@ export class ArticleComponent extends PageDirective {
       this.articleService
         .createArticle({ ...this.articleForm.value, keywords })
         .subscribe({
-          next: (articles) => {
-            console.log(`CREATE ARTICLE SUCCESS`, articles);
+          next: (article) => {
+            this.router.navigate(['/', article.id]);
           },
           error: (err: any) => {
             console.error(`CREATE ARTICLES`, err);

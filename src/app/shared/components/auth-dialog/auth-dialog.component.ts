@@ -117,6 +117,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         this._authService.signIn(payLoad).subscribe({
           next: () => {
             this.loading = false;
+            this.dialogRef.close()
           },
           error: (error) => {
             this.loading = false;
