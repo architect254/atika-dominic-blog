@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   ActivatedRoute,
   Data,
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { AuthService } from '@core/services/auth.service';
-import { filter, Observable, Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { User } from '@models/user';
 import { FooterComponent } from '../footer/footer.component';
 import { LoadingService } from '@core/services/loading.service';
@@ -34,6 +34,7 @@ import { LoadingService } from '@core/services/loading.service';
     MatMenuModule,
     FooterComponent,
     AsyncPipe,
+    CommonModule,
   ],
   providers: [AsyncPipe],
 })
@@ -51,44 +52,50 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.isAuthenticated$ = this.authService.isAuthenticated$;
-    this.user$ = this.authService.user$;
+    this.getAuthDetails();
+  }
+  getAuthDetails() {
+    this.user$ = this.route.data.pipe(map((data) => data[`user`]));
+    this.isAuthenticated$ = this.route.data.pipe(
+      map((data) => data[`isAuthenticated`])
+    );
   }
 
   ngOnInit(): void {
     this.getPageTitleAndAction();
+  }
+
+  getPageTitleAndAction() {
     this.$subscriptions$.add(
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))
         .subscribe(() => {
-          this.getPageTitleAndAction();
+          if (!this.route.firstChild?.firstChild) {
+            this.pageHeading = ``;
+            this.action = null;
+          } else if (!this.route.firstChild.firstChild.firstChild) {
+            this.$subscriptions$.add(
+              this.route.firstChild?.firstChild?.data.subscribe(
+                (data: Data) => {
+                  this.action = data[`action`] ?? ``;
+                  this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+                    .routeConfig?.title as string;
+                }
+              )
+            );
+          } else {
+            this.$subscriptions$.add(
+              this.route.firstChild?.firstChild?.firstChild?.data.subscribe(
+                (data: Data) => {
+                  this.action = data[`action`] ?? ``;
+                  this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+                    .routeConfig?.title as string;
+                }
+              )
+            );
+          }
         })
     );
-  }
-
-  getPageTitleAndAction() {
-    if (!this.route.firstChild?.firstChild) {
-      this.pageHeading = ``;
-      this.action = null;
-    } else if (!this.route.firstChild.firstChild.firstChild) {
-      this.$subscriptions$.add(
-        this.route.firstChild?.firstChild?.data.subscribe((data: Data) => {
-          this.action = data[`action`] ?? ``;
-          this.pageHeading = this.route.firstChild?.firstChild?.snapshot
-            .routeConfig?.title as string;
-        })
-      );
-    } else {
-      this.$subscriptions$.add(
-        this.route.firstChild?.firstChild?.firstChild?.data.subscribe(
-          (data: Data) => {
-            this.action = data[`action`] ?? ``;
-            this.pageHeading = this.route.firstChild?.firstChild?.snapshot
-              .routeConfig?.title as string;
-          }
-        )
-      );
-    }
   }
 
   act() {}

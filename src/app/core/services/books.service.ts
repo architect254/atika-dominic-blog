@@ -68,6 +68,7 @@ export class BooksService extends APIService {
   }
 
   getBooks(pagination: PaginationParams) {
+    console.log(`ENDPOINT`, this.endpoint);
     const { page, pageSize } = pagination;
     const endpoint = `${this.endpoint}`;
 

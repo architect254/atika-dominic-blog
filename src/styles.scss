@@ -15,7 +15,7 @@
 // Define the theme object.
 $atika-dominic-theme: mat.define-theme((color: (theme-type: light,
         primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        tertiary: mat.$green-palette,
       ),
       typography: (brand-family: 'Poppins',
         plain-family:'Poppins',
@@ -26,7 +26,7 @@ $atika-dominic-theme: mat.define-theme((color: (theme-type: light,
       )));
 
 $atika-dominic-dark-theme: mat.define-theme((color: (theme-type: dark,
-        primary: mat.$blue-palette,
+        primary: mat.$green-palette,
         tertiary: mat.$azure-palette,
       ),
       typography: (brand-family: 'Poppins',

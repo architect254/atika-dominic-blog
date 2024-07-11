@@ -3,7 +3,7 @@
 
 @mixin color($atika-dominic-theme) {
   .site-header {
-    color: mat.get-theme-color($atika-dominic-theme, tertiary, 30) !important;
+    color: mat.get-theme-color($atika-dominic-theme, tertiary, 90) !important;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
   }
@@ -12,12 +12,23 @@
     background-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
 
     .primary-nav {
-      background-color: mat.get-theme-color($atika-dominic-theme, primary, 10) !important;
+      background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
     }
   }
 
+  a[mat-stroked-button],
+  a[mat-button] {
+    color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+  }
+
+  a[mat-stroked-button] {
+    border-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+  }
+
+
+
   footer {
-    background-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
+    background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
     color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
   }
 }

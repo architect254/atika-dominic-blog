@@ -1,11 +1,19 @@
 <mat-toolbar id="toolbar">
-  <mat-toolbar-row>
-    <header class="site-header container" routerLink="/">Atika Dominic</header>
+  <mat-toolbar-row class="container header-banner">
+    <header class="site-header" routerLink="">Atika Dominic</header>
+    <a mat-raised-button routerLink="donate" routerLinkActive="active"
+      ><mat-icon
+        aria-hidden="false"
+        aria-label="Volunteer to Atika Dominic's blog"
+        fontIcon="volunteer_activism"
+      ></mat-icon>
+      Donate Now!
+    </a>
   </mat-toolbar-row>
   <mat-toolbar-row class="primary-nav">
     <div class="container">
       <nav class="feature-btns">
-        <a mat-flat-button routerLink="/articles" routerLinkActive="active"
+        <a mat-flat-button routerLink="articles" routerLinkActive="active"
           ><mat-icon
             aria-hidden="false"
             aria-label="Read Atika Dominic's articles"
@@ -16,7 +24,7 @@
         <a
           mat-flat-button
           color="tertiary"
-          routerLink="/books"
+          routerLink="books"
           routerLinkActive="active"
           ><mat-icon
             aria-hidden="false"
@@ -29,7 +37,7 @@
       <nav class="navigation-btns">
         <a
           mat-stroked-button
-          routerLink="/"
+          routerLink=""
           color="author"
           fragment="about-atika"
           routerLinkOptions="{anchorScrolling:'enabled'}"
@@ -42,7 +50,7 @@
         </a>
         <a
           mat-stroked-button
-          routerLink="/"
+          routerLink=""
           fragment="contact-atika"
           color="author"
           ><mat-icon
@@ -52,19 +60,16 @@
           ></mat-icon>
           Contact Atika
         </a>
-        @if (isAuthenticated$ | async) {
+        @if ((user$ | async) && (isAuthenticated$ | async)) {
         <a
           mat-button
-          color="primary"
           class="account-menu-button"
           [matMenuTriggerFor]="profileMenu"
           aria-label="User's profile menu"
         >
           <mat-icon fontIcon="account_circle"></mat-icon
-          >{{ (user$ | async)?.name }}
-        </a>
-
-        <mat-menu #profileMenu="matMenu">
+          >{{ (user$ | async)?.name }}</a
+        ><mat-menu #profileMenu="matMenu">
           <button mat-menu-item (click)="goToAuthorConfig()">
             <mat-icon>person</mat-icon>
             <span>About {{ (user$ | async)?.name }}</span>
@@ -76,7 +81,7 @@
         </mat-menu>
 
         } @else {
-        <a mat-button (click)="login()" color="primary"
+        <a mat-button (click)="login()"
           ><mat-icon
             aria-hidden="false"
             aria-label="Login to the site"

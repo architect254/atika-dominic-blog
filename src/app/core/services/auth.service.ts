@@ -73,15 +73,13 @@ export class AuthService extends APIService {
       .pipe(
         tap({
           next: ({ accessToken }) => {
-            this.$token.next(accessToken);
             this.storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
           },
         })
       );
   }
   signOut() {
-    this.$token.next(null);
-    this.storage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.storage.clear();
   }
 
   resetPassword(payload: any) {

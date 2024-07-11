@@ -79,7 +79,7 @@ export class ArticleComponent extends PageDirective {
       content: [``, Validators.required],
     });
 
-    this.articleForm.setValue(this.asyncPipe.transform(this.$article) ?? {});
+    this.articleForm.patchValue(this.asyncPipe.transform(this.$article) ?? {});
   }
 
   getArticle() {

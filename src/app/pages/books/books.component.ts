@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT, JsonPipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DOCUMENT, JsonPipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
@@ -34,6 +34,7 @@ import { AuthService } from '@core/services/auth.service';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    CommonModule,
   ],
   templateUrl: './books.component.html',
   styleUrl: './books.component.scss',
@@ -63,15 +64,15 @@ export class BooksComponent extends GridContainerDirective {
     });
   }
 
-  createBook() {
+  create() {
     this.router.navigate(['books', 'create']);
   }
 
-  editBook(id: string) {
+  edit(id: string) {
     this.router.navigate(['books', id]);
   }
 
-  onDelete(id: string) {
+  delete(id: string) {
     console.log(`DELETE ARTICLE`);
     this.$subscription$.add(
       this._booksService.deleteBook(id).subscribe({
@@ -88,7 +89,7 @@ export class BooksComponent extends GridContainerDirective {
       })
     );
   }
-  goToBook(bookId: string) {
+  view(bookId: string) {
     this.router.navigate([bookId]);
   }
   override ngOnInit(): void {

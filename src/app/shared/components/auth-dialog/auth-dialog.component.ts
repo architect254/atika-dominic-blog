@@ -112,25 +112,11 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     this.loading = true;
     const payLoad = this.authForm.getRawValue();
 
-    const login = () => {
-      this.$subscription$.add(
-        this._authService.signIn(payLoad).subscribe({
-          next: () => {
-            this.loading = false;
-            this.dialogRef.close()
-          },
-          error: (error) => {
-            this.loading = false;
-          },
-        })
-      );
-    };
-
     if (this.$action.value != `Login`) {
       this.$subscription$.add(
         this._authService.signUp(payLoad).subscribe({
           next: () => {
-            login();
+            this.login(payLoad);
           },
           error: (error) => {
             this.loading = false;
@@ -138,9 +124,24 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-      login();
+      this.login(payLoad);
     }
   }
+
+  login = (payload: any) => {
+    this.$subscription$.add(
+      this._authService.signIn(payload).subscribe({
+        next: () => {
+          this.loading = false;
+          window.location.reload();
+        },
+        error: (error) => {
+          this.loading = false;
+        },
+      })
+    );
+  };
+
   ngOnDestroy(): void {
     this.$subscription$.unsubscribe();
   }

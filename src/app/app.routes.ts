@@ -1,8 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { articleResolver } from '@core/resolvers/article.resolver';
-import { articlesResolver } from '@core/resolvers/articles.resolver';
+import {
+  articleResolver,
+  articlesResolver,
+} from '@core/resolvers/article.resolver';
 import { authorResolver } from '@core/resolvers/author.resolver';
+import { bookResolver, booksResolver } from '@core/resolvers/book.resolver';
+import { authResolver, userResolver } from '@core/resolvers/user.resolver';
 
 export const routes: Routes = [
   {
@@ -103,6 +107,22 @@ export const routes: Routes = [
                 ({ BookComponent }) => BookComponent
               ),
             title: `Create Book`,
+            resolve: { article: bookResolver },
+            data: {
+              action: `Back`,
+              path: `../`,
+              icon: `back`,
+              requiresAuth: false,
+            },
+          },
+          {
+            path: `edit/:id`,
+            loadComponent: () =>
+              import(`@pages/book/book.component`).then(
+                ({ BookComponent }) => BookComponent
+              ),
+            title: `Update Book`,
+            resolve: { article: bookResolver },
             data: {
               action: `Back`,
               path: `../`,
@@ -113,11 +133,11 @@ export const routes: Routes = [
           {
             path: `:id`,
             loadComponent: () =>
-              import(`@pages/book/book.component`).then(
-                ({ BookComponent }) => BookComponent
+              import(`@pages/view-book/view-book.component`).then(
+                ({ ViewBookComponent }) => ViewBookComponent
               ),
-            title: `Update Book`,
-            resolve: { article: articleResolver },
+            title: `View Book`,
+            resolve: { article: bookResolver },
             data: {
               action: `Back`,
               path: `../`,
@@ -132,7 +152,7 @@ export const routes: Routes = [
                 ({ BooksComponent }) => BooksComponent
               ),
             title: `View Books`,
-            resolve: { articles: articlesResolver },
+            resolve: { articles: booksResolver },
             data: {
               action: {
                 label: `Create Book`,
@@ -144,21 +164,7 @@ export const routes: Routes = [
           },
         ],
       },
-      {
-        path: `:id`,
-        loadComponent: () =>
-          import(`@pages/view-book/view-book.component`).then(
-            ({ ViewBookComponent }) => ViewBookComponent
-          ),
-        title: `View Book`,
-        resolve: { article: articleResolver },
-        data: {
-          action: `Back`,
-          path: `../`,
-          icon: `back`,
-          requiresAuth: false,
-        },
-      },
+
       {
         path: ``,
         loadComponent: () =>
@@ -169,6 +175,7 @@ export const routes: Routes = [
         resolve: { articles: authorResolver },
       },
     ],
+    resolve: { user: userResolver, isAuthenticated: authResolver },
   },
   {
     path: `**`,

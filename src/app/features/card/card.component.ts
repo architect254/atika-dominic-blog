@@ -16,22 +16,5 @@ import { Router } from '@angular/router';
   styleUrl: './card.component.scss',
 })
 export class CardComponent {
-  @Input() article!: Article;
-  @Output() deleteArticle = new EventEmitter<string>();
-  @Output() goToArticle = new EventEmitter<string>();
-  @Output() editArtice = new EventEmitter<string>();
-
   constructor() {}
-
-  doGotoArticle(id: string) {
-    this.goToArticle.emit(id);
-  }
-
-  onEditArticle(id: string) {
-    this.editArtice.emit(id);
-  }
-
-  onDeleteArticle(id: string) {
-    this.deleteArticle.emit(id);
-  }
 }
