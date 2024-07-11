@@ -1,0 +1,12 @@
+<cdk-virtual-scroll-viewport
+  itemSize="50"
+  minBufferPx="200"
+  maxBufferPx="400"
+  [style.height]="gridHeight + 'px'"
+  class="grid"
+>
+  @for (book of books$ | async; track book) {
+  <adb-card [article]="book" (goToArticle)="goToBook($event)" (editArtice)="editBook($event)" (deleteArticle)="onDelete($event)"></adb-card>
+
+  }
+</cdk-virtual-scroll-viewport>

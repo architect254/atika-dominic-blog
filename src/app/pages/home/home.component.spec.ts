@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AtikaDominicComponent } from './atika-dominic.component';
+import { HomeComponent } from './home.component';
 
-describe('AtikaDominicComponent', () => {
-  let component: AtikaDominicComponent;
-  let fixture: ComponentFixture<AtikaDominicComponent>;
+describe('HomeComponent', () => {
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AtikaDominicComponent]
+      imports: [HomeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AtikaDominicComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

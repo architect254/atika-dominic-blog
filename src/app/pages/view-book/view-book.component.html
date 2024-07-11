@@ -1,0 +1,6 @@
+<h1 class="mat-h1">{{ (article$ | async)?.title }}</h1>
+<section class="article">
+  <article class="keywords">{{ (article$ | async)?.keywords }}</article>
+  <article class="content" [innerHTML]="(article$ | async)?.content"></article>
+  <article class="author">Authored by Atika Dominic</article>
+</section>

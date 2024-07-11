@@ -1,0 +1,16 @@
+.form-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+button {
+    text-wrap: nowrap;
+    float: right;
+    margin: 16px 0;
+}
+
+.article {
+    word-wrap: break-word;
+}

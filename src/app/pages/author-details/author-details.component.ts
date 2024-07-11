@@ -28,7 +28,7 @@ import { throwError } from 'rxjs';
 import { AuthorPayload } from '@models/author';
 
 @Component({
-  selector: 'adb-about-atika-dominic',
+  selector: 'adb-author-details',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,10 +37,10 @@ import { AuthorPayload } from '@models/author';
     MatInputModule,
     MatButtonModule,
   ],
-  templateUrl: './about-atika-dominic.component.html',
-  styleUrl: './about-atika-dominic.component.scss',
+  templateUrl: './author-details.component.html',
+  styleUrl: './author-details.component.scss',
 })
-export class AboutAtikaDominicComponent extends GridContainerDirective {
+export class AuthorDetailsComponent extends GridContainerDirective {
   authorForm: FormGroup = this._fb.group({
     about_title: ['', Validators.required],
     about_description: ['', Validators.required],

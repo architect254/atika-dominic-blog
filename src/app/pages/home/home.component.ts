@@ -5,13 +5,13 @@ import { AuthorService } from '@core/services/author.service';
 import { GridContainerDirective } from '@shared/directives/grid-container/grid-container.directive';
 
 @Component({
-  selector: 'adb-atika-dominic',
+  selector: 'adb-home',
   standalone: true,
   imports: [AsyncPipe, JsonPipe],
-  templateUrl: './atika-dominic.component.html',
-  styleUrl: './atika-dominic.component.scss',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
-export class AtikaDominicComponent extends GridContainerDirective {
+export class HomeComponent extends GridContainerDirective {
   author$ = this.authorService.author$;
   constructor(private authorService: AuthorService) {
     super();
