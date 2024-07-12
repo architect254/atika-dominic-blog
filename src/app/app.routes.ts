@@ -25,10 +25,12 @@ export const routes: Routes = [
         title: `Set Author Details`,
         resolve: { author: authorResolver },
         data: {
-          action: `Back`,
-          path: `../`,
-          icon: `back`,
-          requiresAuth: false,
+          action: {
+            label: `Back`,
+            path: `..`,
+            icon: `back`,
+            requiresAuth: false,
+          },
         },
       },
       {
@@ -42,10 +44,12 @@ export const routes: Routes = [
               ),
             title: `Create Blog Article`,
             data: {
-              action: `Back`,
-              path: `../`,
-              icon: `back`,
-              requiresAuth: false,
+              action: {
+                label: `Back`,
+                path: `..`,
+                icon: `back`,
+                requiresAuth: false,
+              },
             },
           },
           {
@@ -57,10 +61,12 @@ export const routes: Routes = [
             title: `Update Blog Article`,
             resolve: { article: articleResolver },
             data: {
-              action: `Back`,
-              path: `../`,
-              icon: `back`,
-              requiresAuth: false,
+              action: {
+                label: `Back`,
+                path: `..`,
+                icon: `back`,
+                requiresAuth: false,
+              },
             },
           },
           {
@@ -69,7 +75,7 @@ export const routes: Routes = [
               import(`@pages/articles/articles.component`).then(
                 ({ ArticlesComponent }) => ArticlesComponent
               ),
-            title: `View Blog Articles`,
+            title: `Atika's Blog Articles`,
             resolve: { articles: articlesResolver },
             data: {
               action: {
@@ -91,10 +97,12 @@ export const routes: Routes = [
         title: `View Blog Article`,
         resolve: { article: articleResolver },
         data: {
-          action: `Back`,
-          path: `../`,
-          icon: `back`,
-          requiresAuth: false,
+          action: {
+            label: `Back`,
+            path: `..`,
+            icon: `back`,
+            requiresAuth: false,
+          },
         },
       },
       {
@@ -109,10 +117,12 @@ export const routes: Routes = [
             title: `Create Book`,
             resolve: { article: bookResolver },
             data: {
-              action: `Back`,
-              path: `../`,
-              icon: `back`,
-              requiresAuth: false,
+              action: {
+                label: `Back`,
+                path: `..`,
+                icon: `back`,
+                requiresAuth: false,
+              },
             },
           },
           {
@@ -124,10 +134,12 @@ export const routes: Routes = [
             title: `Update Book`,
             resolve: { article: bookResolver },
             data: {
-              action: `Back`,
-              path: `../`,
-              icon: `back`,
-              requiresAuth: false,
+              action: {
+                label: `Back`,
+                path: `..`,
+                icon: `back`,
+                requiresAuth: false,
+              },
             },
           },
           {
@@ -139,10 +151,12 @@ export const routes: Routes = [
             title: `View Book`,
             resolve: { article: bookResolver },
             data: {
-              action: `Back`,
-              path: `../`,
-              icon: `back`,
-              requiresAuth: false,
+              action: {
+                label: `Back`,
+                path: `..`,
+                icon: `back`,
+                requiresAuth: false,
+              },
             },
           },
           {
@@ -164,7 +178,6 @@ export const routes: Routes = [
           },
         ],
       },
-
       {
         path: ``,
         loadComponent: () =>

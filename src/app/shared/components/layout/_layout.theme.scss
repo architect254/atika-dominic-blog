@@ -14,18 +14,16 @@
     .primary-nav {
       background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
     }
+
+    a[mat-stroked-button],
+    a[mat-button] {
+      color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+    }
+
+    a[mat-stroked-button] {
+      border-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+    }
   }
-
-  a[mat-stroked-button],
-  a[mat-button] {
-    color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
-  }
-
-  a[mat-stroked-button] {
-    border-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
-  }
-
-
 
   footer {
     background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;

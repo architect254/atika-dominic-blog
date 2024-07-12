@@ -63,39 +63,38 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPageTitleAndAction();
-  }
-
-  getPageTitleAndAction() {
     this.$subscriptions$.add(
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))
         .subscribe(() => {
-          if (!this.route.firstChild?.firstChild) {
-            this.pageHeading = ``;
-            this.action = null;
-          } else if (!this.route.firstChild.firstChild.firstChild) {
-            this.$subscriptions$.add(
-              this.route.firstChild?.firstChild?.data.subscribe(
-                (data: Data) => {
-                  this.action = data[`action`] ?? ``;
-                  this.pageHeading = this.route.firstChild?.firstChild?.snapshot
-                    .routeConfig?.title as string;
-                }
-              )
-            );
-          } else {
-            this.$subscriptions$.add(
-              this.route.firstChild?.firstChild?.firstChild?.data.subscribe(
-                (data: Data) => {
-                  this.action = data[`action`] ?? ``;
-                  this.pageHeading = this.route.firstChild?.firstChild?.snapshot
-                    .routeConfig?.title as string;
-                }
-              )
-            );
-          }
+          this.getPageTitleAndAction();
         })
     );
+  }
+
+  getPageTitleAndAction() {
+    if (!this.route.firstChild?.firstChild) {
+      this.pageHeading = ``;
+      this.action = null;
+    } else if (!this.route.firstChild.firstChild.firstChild) {
+      this.$subscriptions$.add(
+        this.route.firstChild?.firstChild?.data.subscribe((data: Data) => {
+          this.action = data[`action`] ?? ``;
+          this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+            .routeConfig?.title as string;
+        })
+      );
+    } else {
+      this.$subscriptions$.add(
+        this.route.firstChild?.firstChild?.firstChild?.data.subscribe(
+          (data: Data) => {
+            this.action = data[`action`] ?? ``;
+            this.pageHeading = this.route.firstChild?.firstChild?.snapshot
+              .routeConfig?.title as string;
+          }
+        )
+      );
+    }
   }
 
   act() {}

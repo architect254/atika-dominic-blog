@@ -97,7 +97,7 @@
 <section id="outlet-container" class="container">
   <nav id="secondary-nav" class="article-nav">
     <h1 class="mat-h1">{{ pageHeading }}</h1>
-    @if (action && (isAuthenticated$ | async)) {
+    @if (action) {
     <a mat-button [routerLink]="action.path"
       ><mat-icon
         aria-hidden="false"
