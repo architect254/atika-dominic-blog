@@ -9,8 +9,6 @@
   }
 
   mat-toolbar {
-    background-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
-
     .primary-nav {
       background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
     }
@@ -24,23 +22,12 @@
       border-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
     }
   }
-
-  footer {
-    background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
-    color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
-  }
 }
 
 @mixin typography($atika-dominic-theme) {
-  .app-name {
-    font: mat.get-theme-typography($atika-dominic-theme, display-small, font);
-    color: mat.get-theme-color($atika-dominic-theme, secondary, 100);
-  }
-
-  .page-title {
-    font: mat.get-theme-typography($atika-dominic-theme, headline-large, font);
-    color: mat.get-theme-color($atika-dominic-theme, primary, 30);
-  }
+  // .site-header{
+  //   font: mat.get-theme-typography($atika-dominic-theme, display-small, font);
+  // }
 }
 
 @mixin theme($atika-dominic-theme) {

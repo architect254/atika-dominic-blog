@@ -6,6 +6,7 @@
 // Plus imports for other components in your app.
 
 @use './app/shared/components/layout/layout.theme' as layout;
+@use './app/shared/components/footer/footer.theme' as footer;
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -17,7 +18,7 @@ $atika-dominic-theme: mat.define-theme((color: (theme-type: light,
         primary: mat.$azure-palette,
         tertiary: mat.$green-palette,
       ),
-      typography: (brand-family: 'Poppins',
+      typography: (brand-family: 'Permanent Marker',
         plain-family:'Poppins',
         bold-weight: 900,
         medium-weight:500,
@@ -29,7 +30,7 @@ $atika-dominic-dark-theme: mat.define-theme((color: (theme-type: dark,
         primary: mat.$green-palette,
         tertiary: mat.$azure-palette,
       ),
-      typography: (brand-family: 'Poppins',
+      typography: (brand-family: 'Permanent Marker',
         plain-family:'Poppins',
         bold-weight: 900,
         medium-weight:500,
@@ -52,6 +53,9 @@ $atika-dominic-dark-theme: mat.define-theme((color: (theme-type: dark,
   }
 
   @include layout.color($atika-dominic-theme);
+  @include layout.typography($atika-dominic-theme);
+  @include footer.color($atika-dominic-theme);
+  @include footer.typography($atika-dominic-theme);
 
 }
 
@@ -81,6 +85,7 @@ mat-form-field {
   .mat-mdc-dialog-content {
     max-height: 90vh;
   }
+
   .mat-danger-dialog {
     .mat-mdc-snackbar-surface {
       background-color: red;

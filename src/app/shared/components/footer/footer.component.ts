@@ -1,10 +1,29 @@
 import { Component } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'adb-footer',
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+  ],
 })
-export class FooterComponent {}
+export class FooterComponent {
+  year = new Date().getFullYear();
+
+  newsLetterForm = this.fb.group({
+    email: ['', Validators.required],
+  });
+
+  constructor(private fb: FormBuilder) {}
+
+  submitForm() {}
+}

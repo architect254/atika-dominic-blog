@@ -1,0 +1,76 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($atika-dominic-theme) {
+  footer {
+    background-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
+    color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
+
+    .newsletter-form {
+      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: mat.get-theme-color($atika-dominic-theme, primary, 10) !important;
+
+        .mdc-text-field__input {
+          color: mat.get-theme-color($atika-dominic-theme, primary, 99) !important;
+        }
+      }
+
+
+      button[mat-button].mat-subscribe {
+        color: mat.get-theme-color($atika-dominic-theme, primary, 90) !important;
+        background-color: mat.get-theme-color($atika-dominic-theme, primary, 50) !important;
+
+        &:hover {
+          background-color: mat.get-theme-color($atika-dominic-theme, primary, 40) !important;
+        }
+      }
+    }
+
+    .links {
+      background-color: mat.get-theme-color($atika-dominic-theme, primary, 20) !important;
+
+    }
+
+    .developed-by {
+      background-color: mat.get-theme-color($atika-dominic-theme, primary, 10) !important;
+    }
+  }
+
+  a[mat-button] {
+    color: mat.get-theme-color($atika-dominic-theme, primary, 90) !important;
+  }
+}
+
+@mixin typography($atika-dominic-theme) {
+  footer {
+    .newsletter-title {
+      font: mat.get-theme-typography($atika-dominic-theme, headline-small, font);
+    }
+
+    .newsletter-info {
+      font: mat.get-theme-typography($atika-dominic-theme, body-small, font);
+    }
+
+    small.atikas-description {
+      font: mat.get-theme-typography($atika-dominic-theme, body-small, font);
+    }
+
+    small.copy-right {
+      font: mat.get-theme-typography($atika-dominic-theme, label-small, font);
+    }
+
+    .developed-by-text {
+      font: mat.get-theme-typography($atika-dominic-theme, label-small, font);
+    }
+  }
+}
+
+@mixin theme($atika-dominic-theme) {
+  @if mat.theme-has($atika-dominic-theme, color) {
+    @include color($atika-dominic-theme);
+  }
+
+  @if mat.theme-has($atika-dominic-theme, typography) {
+    @include typography($atika-dominic-theme);
+  }
+}

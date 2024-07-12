@@ -1,3 +1,53 @@
 <footer>
-  
+  <section class="newsletter">
+    <div class="container">
+      <h5 class="newsletter-title">Sign Up For Atika Dominic's NewsLetter</h5>
+      <caption class="newsletter-info">
+        Receive Atika Dominic's quarterly updates with the latest articles,
+        books and insights from this site
+      </caption>
+      <form
+        [formGroup]="newsLetterForm"
+        (submit)="submitForm()"
+        class="newsletter-form"
+      >
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email" color="email-input"/>
+        </mat-form-field>
+
+        <button mat-button type="submit" color="subscribe">Subscribe</button>
+      </form>
+    </div>
+  </section>
+  <section class="links">
+    <div class="container">
+      <div class="site-links">
+        <a mat-button routerLink="">Atika's Artices</a>
+        <a mat-button routerLink="">Atika's Books</a>
+        <a mat-button routerLink="">About Atika</a>
+        <a mat-button routerLink="">Contact Atika</a>
+      </div>
+      <div class="external-links">
+        <p routerLink="" class="site-header">Atika Dominic</p>
+        <small class="atikas-description">
+          Atika Dominic is a great writer
+        </small>
+
+        <small class="copy-right">
+          &copy;{{ year }} Atika Dominic. All rights reserved
+        </small>
+
+        <div class="social-links">
+          <i class="bi bi-facebook"></i>
+          <i class="bi bi-twitter"></i>
+          <i class="bi bi-whatsapp"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="developed-by">
+    <p class="container developed-by-text">
+      Designed & Developed by Code Links Industries, Ltd
+    </p>
+  </section>
 </footer>
