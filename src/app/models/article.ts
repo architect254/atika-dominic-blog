@@ -5,7 +5,7 @@ export interface Article extends BaseEntity {
   title: string;
   description: string;
   keywords:string;
-  header_image: string;
+  image: string;
   content: string;
   comments: Comment[];
 }

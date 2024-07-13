@@ -89,23 +89,6 @@ export const routes: Routes = [
         ],
       },
       {
-        path: `:id`,
-        loadComponent: () =>
-          import(`@pages/view-article/view-article.component`).then(
-            ({ ViewArticleComponent }) => ViewArticleComponent
-          ),
-        title: `View Blog Article`,
-        resolve: { article: articleResolver },
-        data: {
-          action: {
-            label: `Back`,
-            path: `..`,
-            icon: `back`,
-            requiresAuth: false,
-          },
-        },
-      },
-      {
         path: `books`,
         children: [
           {
@@ -177,6 +160,23 @@ export const routes: Routes = [
             },
           },
         ],
+      },
+      {
+        path: `:id`,
+        loadComponent: () =>
+          import(`@pages/view-article/view-article.component`).then(
+            ({ ViewArticleComponent }) => ViewArticleComponent
+          ),
+        title: `View Blog Article`,
+        resolve: { article: articleResolver },
+        data: {
+          action: {
+            label: `Back`,
+            path: `..`,
+            icon: `back`,
+            requiresAuth: false,
+          },
+        },
       },
       {
         path: ``,

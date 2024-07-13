@@ -1,14 +1,16 @@
 <mat-toolbar id="toolbar">
-  <mat-toolbar-row class="container header-banner">
-    <header class="site-header" routerLink="">Atika Dominic</header>
-    <a mat-raised-button routerLink="donate" routerLinkActive="active"
-      ><mat-icon
-        aria-hidden="false"
-        aria-label="Volunteer to Atika Dominic's blog"
-        fontIcon="volunteer_activism"
-      ></mat-icon>
-      Donate Now!
-    </a>
+  <mat-toolbar-row class="header-banner">
+    <div class="container header-banner-container">
+      <header class="author-name" routerLink="">Atika Dominic</header>
+      <a mat-raised-button routerLink="donate" routerLinkActive="active"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="Volunteer to Atika Dominic's blog"
+          fontIcon="volunteer_activism"
+        ></mat-icon>
+        Donate Now!
+      </a>
+    </div>
   </mat-toolbar-row>
   <mat-toolbar-row class="primary-nav">
     <div class="container">
@@ -96,7 +98,7 @@
 </mat-toolbar>
 <section id="outlet-container" class="container">
   <nav id="secondary-nav" class="article-nav">
-    <h1 class="mat-h1">{{ pageHeading }}</h1>
+    <h1 class="mat-body-small">{{ pageHeading }}</h1>
     @if (action) {
     <a mat-button [routerLink]="action.path"
       ><mat-icon

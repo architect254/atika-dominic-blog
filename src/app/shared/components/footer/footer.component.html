@@ -2,35 +2,60 @@
   <section class="newsletter">
     <div class="container">
       <h5 class="newsletter-title">Sign Up For Atika Dominic's NewsLetter</h5>
-      <caption class="newsletter-info">
+      <p class="newsletter-info">
         Receive Atika Dominic's quarterly updates with the latest articles,
         books and insights from this site
-      </caption>
+      </p>
       <form
         [formGroup]="newsLetterForm"
         (submit)="submitForm()"
         class="newsletter-form"
       >
         <mat-form-field>
-          <input matInput formControlName="email" placeholder="Email" color="email-input"/>
+          <input
+            matInput
+            formControlName="email"
+            placeholder="Email"
+            color="email-input"
+          />
         </mat-form-field>
 
-        <button mat-button type="submit" color="subscribe">Subscribe</button>
+        <button
+          mat-button
+          type="submit"
+          color="subscribe"
+          [disabled]="!newsLetterForm.valid"
+        >
+          Subscribe
+        </button>
       </form>
     </div>
   </section>
   <section class="links">
     <div class="container">
       <div class="site-links">
-        <a mat-button routerLink="">Atika's Artices</a>
-        <a mat-button routerLink="">Atika's Books</a>
-        <a mat-button routerLink="">About Atika</a>
-        <a mat-button routerLink="">Contact Atika</a>
+        <a mat-button routerLink="/articles">Atika's Artices</a>
+        <a mat-button routerLink="/books">Atika's Books</a>
+        <a
+          mat-button
+          routerLink="/"
+          fragment="about-atika"
+          routerLinkOptions="{anchorScrolling:'enabled'}"
+          >About Atika</a
+        >
+        <a
+          mat-button
+          routerLink="/"
+          fragment="contact-atika"
+          routerLinkOptions="{anchorScrolling:'enabled'}"
+          >Contact Atika</a
+        >
       </div>
       <div class="external-links">
-        <p routerLink="" class="site-header">Atika Dominic</p>
+        <p routerLink="" class="author-name">Atika Dominic</p>
         <small class="atikas-description">
-          Atika Dominic is a great writer
+          Atika Dominic is a great great great greatgreat great great great
+          great great writer
         </small>
 
         <small class="copy-right">

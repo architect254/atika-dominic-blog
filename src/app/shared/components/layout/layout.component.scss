@@ -1,4 +1,4 @@
-.header-banner {
+.header-banner-container {
     display: flex;
     justify-content: space-between;
 }
@@ -25,12 +25,7 @@
     padding-right: 80px;
 }
 
-.site-header {
-    font-family: "Permanent Marker", cursive;
-    font-weight: 400;
-    font-size: xx-large;
-    font-style: normal;
-
+.author-name {
     &:hover {
         cursor: pointer;
     }
@@ -38,7 +33,7 @@
 
 #outlet-container {
     margin-top: 50px;
-    min-height: 100vh;
+    min-height: 80vh;
 
     .article-nav {
         display: flex;

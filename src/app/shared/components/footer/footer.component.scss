@@ -41,13 +41,7 @@ footer {
             flex-direction: column;
             flex-wrap: wrap;
 
-            .site-header {
-                font-family: "Permanent Marker", cursive;
-                font-weight: 400;
-                font-size: xx-large;
-                font-style: normal;
-                margin: 0;
-
+            .author-name {
                 &:hover {
                     cursor: pointer;
                 }
@@ -58,6 +52,18 @@ footer {
             max-height: 80px;
             margin: auto 0;
             color: white;
+        }
+
+        .external-links {
+            width: 360px;
+
+            .author-name {
+                margin: 0;
+            }
+
+            .atikas-description {
+                margin-bottom: 16px;
+            }
         }
 
         .social-links {

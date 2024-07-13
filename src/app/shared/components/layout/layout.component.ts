@@ -18,7 +18,6 @@ import { AuthService } from '@core/services/auth.service';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { User } from '@models/user';
 import { FooterComponent } from '../footer/footer.component';
-import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'layout',
@@ -100,7 +99,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   act() {}
 
   goToAuthorConfig() {
-    this.router.navigate(['author-details']);
+    this.router.navigate(['set-author-details']);
   }
 
   login() {

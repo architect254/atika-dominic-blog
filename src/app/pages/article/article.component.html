@@ -16,6 +16,28 @@
       <mat-icon matPrefix>subtitles</mat-icon>
     </mat-form-field>
 
+    <input
+      #fileUpload
+      type="file"
+      formControlName="article_image"
+      (change)="onFileSelected($event)"
+      id="article_image"
+      class="file-control"
+      placeholder="Upload image"
+      required
+    />
+
+    <div class="mat-typography" *ngIf="fileToUpload">
+      <section [ngSwitch]="status">
+        <p *ngSwitchCase="'uploading'">
+          ⏳ Uploading...{{ progress | percent }}%
+        </p>
+        <p *ngSwitchCase="'success'">✅ Done!</p>
+        <p *ngSwitchCase="'fail'">❌ Error!</p>
+        <p *ngSwitchDefault>😶 Waiting to upload...</p>
+      </section>
+    </div>
+
     <mat-form-field>
       <mat-label>Article keywords</mat-label>
       <mat-chip-grid
