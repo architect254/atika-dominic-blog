@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -16,11 +15,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ArticlesService } from '@core/services/articles.service';
-import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Article } from '@models/article';
 import { PageDirective } from '@shared/directives/page/page.directive';
-import { filter, map, Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
@@ -50,14 +49,15 @@ export class ArticleComponent extends PageDirective {
   articleForm!: FormGroup;
   readonly keywords = signal(['Blog Article']);
 
-  fileToUpload: File | null = null; // Variable to store file
+  fileToUpload: File | null = null;
   fileName: string = ``;
-  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial'; // Variable to store file status
+  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial';
   progress: number = 0;
 
   imageHash = `article_image-${Date.now()}`;
 
   asyncPipe = inject(AsyncPipe);
+
   constructor(
     private _fb: FormBuilder,
     private articleService: ArticlesService,
@@ -72,14 +72,14 @@ export class ArticleComponent extends PageDirective {
   override ngOnInit() {
     super.ngOnInit();
     this.getArticle();
-    this.buildForm();
+    this.buildArticleForm();
   }
 
-  buildForm() {
+  buildArticleForm() {
     this.articleForm = this._fb.group({
       title: [``, Validators.required],
       description: [``, Validators.required],
-      image: [``],
+      article_image: [``],
       keywords: [``, Validators.required],
       content: [``, Validators.required],
     });
@@ -129,7 +129,7 @@ export class ArticleComponent extends PageDirective {
     }
   }
 
-  uploadProfileImage() {
+  uploadArticleImage() {
     if (this.fileToUpload) {
       this.fileName =
         this.imageHash +
@@ -138,7 +138,7 @@ export class ArticleComponent extends PageDirective {
 
       const formData = new FormData();
 
-      formData.append('profile_image', this.fileToUpload, this.fileName);
+      formData.append('article_image', this.fileToUpload, this.fileName);
 
       const upload$ = this.http.post(
         'http://atikadominic.com/api/upload-article_image',
@@ -157,7 +157,7 @@ export class ArticleComponent extends PageDirective {
               this.progress = Math.round((100 * event.loaded) / event.total);
             } else if (event.type === HttpEventType.Response) {
               this.status = 'success';
-              event.body;
+              this.createArticle();
             }
           },
           error: (error: any) => {
@@ -170,8 +170,7 @@ export class ArticleComponent extends PageDirective {
   }
 
   submit() {
-    this.uploadProfileImage();
-    this.createArticle();
+    this.uploadArticleImage();
   }
 
   createArticle() {
@@ -190,7 +189,7 @@ export class ArticleComponent extends PageDirective {
         .createArticle({
           ...this.articleForm.value,
           keywords,
-          image: this.fileName,
+          article_image: this.fileName,
         } as Article)
         .subscribe({
           next: (article) => {

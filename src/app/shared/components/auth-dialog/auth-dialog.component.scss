@@ -3,6 +3,19 @@
         --mdc-dialog-container-shape: 4px;
     }
 }
-form{
+
+form {
     height: fit-content;
+
+}
+
+:host {
+    ::ng-deep {
+        button.login-btn {
+            span.mdc-button__label {
+                display: flex;
+                gap: 16px;
+            }
+        }
+    }
 }

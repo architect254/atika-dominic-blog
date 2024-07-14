@@ -116,6 +116,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
       this.$subscription$.add(
         this._authService.signUp(payLoad).subscribe({
           next: () => {
+            this.authForm.patchValue(payLoad);
             this.login(payLoad);
           },
           error: (error) => {
@@ -129,6 +130,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
   }
 
   login = (payload: any) => {
+    this.$action.next(`Login`);
     this.$subscription$.add(
       this._authService.signIn(payload).subscribe({
         next: () => {

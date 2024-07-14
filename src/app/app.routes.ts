@@ -26,9 +26,9 @@ export const routes: Routes = [
         resolve: { author: authorResolver },
         data: {
           action: {
-            label: `Back`,
-            path: `..`,
-            icon: `back`,
+            label: `Go Home`,
+            path: `/`,
+            icon: `home`,
             requiresAuth: false,
           },
         },
@@ -46,8 +46,8 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Back`,
-                path: `..`,
-                icon: `back`,
+                path: `articles`,
+                icon: `arrow_back`,
                 requiresAuth: false,
               },
             },
@@ -63,8 +63,8 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Back`,
-                path: `..`,
-                icon: `back`,
+                path: `articles`,
+                icon: `arrow_back`,
                 requiresAuth: false,
               },
             },
@@ -80,7 +80,7 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Create Article`,
-                path: `/articles/create`,
+                path: `articles/create`,
                 icon: `add`,
                 requiresAuth: true,
               },
@@ -102,8 +102,8 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Back`,
-                path: `..`,
-                icon: `back`,
+                path: `articles`,
+                icon: `arrow_back`,
                 requiresAuth: false,
               },
             },
@@ -119,8 +119,8 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Back`,
-                path: `..`,
-                icon: `back`,
+                path: `books`,
+                icon: `arrow_back`,
                 requiresAuth: false,
               },
             },
@@ -136,8 +136,8 @@ export const routes: Routes = [
             data: {
               action: {
                 label: `Back`,
-                path: `..`,
-                icon: `back`,
+                path: `books`,
+                icon: `arrow_back`,
                 requiresAuth: false,
               },
             },
@@ -172,8 +172,8 @@ export const routes: Routes = [
         data: {
           action: {
             label: `Back`,
-            path: `..`,
-            icon: `back`,
+            path: `articles`,
+            icon: `arrow_back`,
             requiresAuth: false,
           },
         },
@@ -185,7 +185,7 @@ export const routes: Routes = [
             ({ HomeComponent }) => HomeComponent
           ),
         title: `About Atika Dominic`,
-        resolve: { articles: authorResolver },
+        resolve: { author: authorResolver },
       },
     ],
     resolve: { user: userResolver, isAuthenticated: authResolver },
@@ -196,5 +196,13 @@ export const routes: Routes = [
       import(`@shared/components/not-found/not-found.component`).then(
         ({ NotFoundComponent }) => NotFoundComponent
       ),
+    data: {
+      action: {
+        label: `Go Home`,
+        path: `/`,
+        icon: `home`,
+        requiresAuth: false,
+      },
+    },
   },
 ];

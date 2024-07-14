@@ -1,8 +1,11 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { ActivatedRoute, Data } from '@angular/router';
 import { AuthorService } from '@core/services/author.service';
+import { Author } from '@models/author';
 
 import { GridContainerDirective } from '@shared/directives/grid-container/grid-container.directive';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'adb-home',
@@ -12,8 +15,8 @@ import { GridContainerDirective } from '@shared/directives/grid-container/grid-c
   styleUrl: './home.component.scss',
 })
 export class HomeComponent extends GridContainerDirective {
-  author$ = this.authorService.author$;
-  constructor(private authorService: AuthorService) {
+  author$!: Observable<Author | null>;
+  constructor(private route: ActivatedRoute) {
     super();
   }
   override ngOnInit(): void {
@@ -22,8 +25,8 @@ export class HomeComponent extends GridContainerDirective {
   }
 
   getAuthor() {
-    this.$subscription$.add(
-      this.authorService.getAuthor().subscribe({ next() {}, error() {} })
+    this.author$ = this.route.data.pipe(
+      map((data: Data) => data['author'] as Author)
     );
   }
 

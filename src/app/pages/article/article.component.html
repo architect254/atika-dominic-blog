@@ -21,10 +21,8 @@
       type="file"
       formControlName="article_image"
       (change)="onFileSelected($event)"
-      id="article_image"
-      class="file-control"
       placeholder="Upload image"
-      required
+      name="article_image"
     />
 
     <div class="mat-typography" *ngIf="fileToUpload">

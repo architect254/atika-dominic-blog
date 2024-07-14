@@ -29,10 +29,8 @@
       type="file"
       formControlName="profile_image"
       (change)="onFileSelected($event)"
-      id="header_image"
-      class="file-control"
       placeholder="Upload image"
-      required
+      name="profile_image"
     />
 
     <div class="mat-typography" *ngIf="fileToUpload">
@@ -100,11 +98,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Youtube Profile Link</mat-label>
+      <mat-label>Whatsapp Contact Number</mat-label>
       <input
         matInput
-        formControlName="youtube_profile"
-        placeholder="youtube.com/profile"
+        formControlName="whatsapp_profile"
+        placeholder="+254 7123 456 789"
       />
       <mat-icon matPrefix>link</mat-icon>
     </mat-form-field>

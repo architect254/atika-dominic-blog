@@ -103,7 +103,7 @@
     <a mat-button [routerLink]="action.path"
       ><mat-icon
         aria-hidden="false"
-        aria-label="Create Article"
+        [attr.aria-label]="action.label"
         [fontIcon]="action.icon"
       ></mat-icon>
       {{ action.label }}

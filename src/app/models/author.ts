@@ -9,7 +9,7 @@ export interface Author extends BaseEntity {
   contact_email: string;
   facebook_profile: string;
   twitter_profile: string;
-  youtube_profile: string;
+  whatsapp_profile: string;
 }
 
 export interface AuthorPayload {
@@ -21,5 +21,5 @@ export interface AuthorPayload {
   contact_email: string;
   facebook_profile: string;
   twitter_profile: string;
-  youtube_profile: string;
+  whatsapp_profile: string;
 }

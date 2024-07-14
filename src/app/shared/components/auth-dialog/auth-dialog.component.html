@@ -38,20 +38,6 @@
       <mat-icon matPrefix>mail</mat-icon>
     </mat-form-field>
 
-    <!-- <mat-form-field (click)="fileInput.click()">
-      <mat-label>Profile Image</mat-label>
-      <input matInput type="text" name="profile" formControlName="profile" />
-      <mat-icon matPrefix>image</mat-icon>
-    </mat-form-field>
-
-    <input
-      hidden
-      (change)="onFileSelected()"
-      #fileInput
-      type="file"
-      id="file"
-    /> -->
-
     <mat-form-field>
       <mat-label>Password</mat-label>
       <input
@@ -80,19 +66,20 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  @if (!loading) {
   <button
     mat-button
-    color="primary"
+    class="login-btn"
     type="submit"
     (click)="submit()"
     cdkFocusInitial
-    [disabled]="!authForm.valid"
+    [disabled]="!authForm.valid || loading"
   >
-    <mat-icon matPrefix>login</mat-icon>{{ action$ | async }}
+    @if(!loading){
+    <mat-icon matPrefix>login</mat-icon>
+    }@else{
+    <mat-spinner diameter="20" mode="indeterminate"></mat-spinner>
+    }
+    <span>{{ action$ | async }}</span>
   </button>
   <button mat-button mat-dialog-close>Cancel</button>
-  }@else{
-  <mat-spinner diameter="20" mode="indeterminate"></mat-spinner>
-  }
 </mat-dialog-actions>

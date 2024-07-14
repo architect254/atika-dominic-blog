@@ -1,7 +1,16 @@
-article{
+article {
     min-height: 100vh;
 
-    .about-atika{
+    .about-content {
+        // text-wrap: wrap;
+
+        .author-profile_picture {
+            width: 400px;
+            float: left
+        }
+    }
+
+    .about-atika {
         background-color: black;
     }
 }

@@ -1,16 +1,7 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { CommonModule, DOCUMENT } from '@angular/common';
-import {
-  Component,
-  Inject,
-  Injector,
-  ViewChild,
-  afterNextRender,
-  inject,
-} from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -21,11 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { GridContainerDirective } from '@shared/directives/grid-container/grid-container.directive';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { AuthorService } from '@core/services/author.service';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { AuthorPayload } from '@models/author';
+import { map, Observable, throwError } from 'rxjs';
+import { Author, AuthorPayload } from '@models/author';
 
 @Component({
   selector: 'adb-author-details',
@@ -41,31 +32,26 @@ import { AuthorPayload } from '@models/author';
   styleUrl: './author-details.component.scss',
 })
 export class AuthorDetailsComponent extends GridContainerDirective {
-  authorForm: FormGroup = this._fb.group({
-    about_title: ['', Validators.required],
-    about_description: ['', Validators.required],
-    profile_image: ['', Validators.required],
-    contact_title: ['', Validators.required],
-    contact_description: ['', Validators.required],
-    contact_email: ['', Validators.required],
-    facebook_profile: ['', Validators.required],
-    twitter_profile: ['', Validators.required],
-    youtube_profile: ['', Validators.required],
-  });
+  author$!: Observable<Author | null>;
+  authorForm!: FormGroup;
 
-  fileToUpload: File | null = null; // Variable to store file
+  fileToUpload: File | null = null; 
   fileName: string = ``;
-  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial'; // Variable to store file status
+  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial'; 
   progress: number = 0;
 
   imageHash = `profile_image-${Date.now()}`;
 
+  asyncPipe = inject(AsyncPipe);
+
   constructor(
     private _fb: FormBuilder,
+    private route: ActivatedRoute,
     private authorService: AuthorService,
     private http: HttpClient
   ) {
     super();
+    this.getAuthor();
   }
 
   onFileSelected(event: any) {
@@ -135,11 +121,27 @@ export class AuthorDetailsComponent extends GridContainerDirective {
   override ngOnInit(): void {
     super.ngOnInit();
     this.getAuthor();
+    this.buildAuthorForm();
+  }
+  buildAuthorForm() {
+    this.authorForm = this._fb.group({
+      about_title: ['', Validators.required],
+      about_description: ['', Validators.required],
+      profile_image: ['', Validators.required],
+      contact_title: ['', Validators.required],
+      contact_description: ['', Validators.required],
+      contact_email: ['', Validators.required],
+      facebook_profile: ['', Validators.required],
+      twitter_profile: ['', Validators.required],
+      whatsapp_profile: ['', Validators.required],
+    });
+
+    this.authorForm.patchValue(this.asyncPipe.transform(this.author$) ?? {});
   }
 
   getAuthor() {
-    this.$subscription$.add(
-      this.authorService.getAuthor().subscribe({ next() {}, error() {} })
+    this.author$ = this.route.data.pipe(
+      map((data: Data) => data['author'] as Author)
     );
   }
 
