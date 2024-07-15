@@ -1,0 +1,115 @@
+<mat-toolbar id="toolbar">
+  <mat-toolbar-row class="header-banner">
+    <div class="container header-banner-container">
+      <header class="author-name" routerLink="">Atika Dominic</header>
+      <a mat-raised-button routerLink="donate" routerLinkActive="active"
+        ><mat-icon
+          aria-hidden="false"
+          aria-label="Volunteer to Atika Dominic's blog"
+          fontIcon="volunteer_activism"
+        ></mat-icon>
+        Donate Now!
+      </a>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row class="primary-nav">
+    <div class="container">
+      <nav class="feature-btns">
+        <a mat-flat-button routerLink="articles" routerLinkActive="active"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="Read Atika Dominic's articles"
+            fontIcon="library_books"
+          ></mat-icon>
+          Read Articles
+        </a>
+        <a
+          mat-flat-button
+          color="tertiary"
+          routerLink="books"
+          routerLinkActive="active"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="View Atika Dominic's books"
+            fontIcon="menu_book"
+          ></mat-icon>
+          View Books
+        </a>
+      </nav>
+      <nav class="navigation-btns">
+        <a
+          mat-stroked-button
+          routerLink=""
+          color="author"
+          fragment="about-atika"
+          routerLinkOptions="{anchorScrolling:'enabled'}"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="About Atika Dominic"
+            fontIcon="info"
+          ></mat-icon>
+          About Atika
+        </a>
+        <a
+          mat-stroked-button
+          routerLink=""
+          fragment="contact-atika"
+          color="author"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="Contact Atika Dominic"
+            fontIcon="phone"
+          ></mat-icon>
+          Contact Atika
+        </a>
+        @if ((user$ | async) && (isAuthenticated$ | async)) {
+        <a
+          mat-button
+          class="account-menu-button"
+          [matMenuTriggerFor]="profileMenu"
+          aria-label="User's profile menu"
+        >
+          <mat-icon fontIcon="account_circle"></mat-icon
+          >{{ (user$ | async)?.name }}</a
+        ><mat-menu #profileMenu="matMenu">
+          <button mat-menu-item (click)="goToAuthorConfig()">
+            <mat-icon>person</mat-icon>
+            <span>About {{ (user$ | async)?.name }}</span>
+          </button>
+          <button mat-menu-item (click)="logOut()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+
+        } @else {
+        <a mat-button (click)="login()"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="Login to the site"
+            fontIcon="login"
+          ></mat-icon>
+          Login
+        </a>
+        }
+      </nav>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<section id="outlet-container" class="container">
+  <nav id="secondary-nav" class="article-nav">
+    <h1 class="mat-body-small">{{ pageHeading }}</h1>
+    @if (action) {
+    <a mat-button [routerLink]="action.path"
+      ><mat-icon
+        aria-hidden="false"
+        [attr.aria-label]="action.label"
+        [fontIcon]="action.icon"
+      ></mat-icon>
+      {{ action.label }}
+    </a>
+    }
+  </nav>
+  <router-outlet></router-outlet>
+</section>
+<adb-footer></adb-footer>

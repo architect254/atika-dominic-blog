@@ -1,0 +1,112 @@
+<form [formGroup]="authorForm" (submit)="submit()">
+  <div class="form-controls">
+    <mat-form-field>
+      <mat-label>Author Intro</mat-label>
+      <input
+        matInput
+        formControlName="about_title"
+        placeholder="About Author Intro..."
+      />
+      <mat-icon matPrefix>title</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>About Author</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        formControlName="about_description"
+        placeholder="About Author Content..."
+      ></textarea>
+      <mat-icon matPrefix>article</mat-icon>
+    </mat-form-field>
+
+    <input
+      #fileUpload
+      type="file"
+      formControlName="profile_image"
+      (change)="onFileSelected($event)"
+      placeholder="Upload image"
+      name="profile_image"
+    />
+
+    <div class="mat-typography" *ngIf="fileToUpload">
+      <section [ngSwitch]="status">
+        <p *ngSwitchCase="'uploading'">
+          ⏳ Uploading...{{ progress | percent }}%
+        </p>
+        <p *ngSwitchCase="'success'">✅ Done!</p>
+        <p *ngSwitchCase="'fail'">❌ Error!</p>
+        <p *ngSwitchDefault>😶 Waiting to upload...</p>
+      </section>
+    </div>
+    <mat-form-field>
+      <mat-label>Contact Author Intro</mat-label>
+      <input
+        matInput
+        formControlName="contact_title"
+        placeholder="Contact Author Intro..."
+      />
+      <mat-icon matPrefix>title</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Contact Author</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        formControlName="contact_description"
+        placeholder="Contact Author Content..."
+      ></textarea>
+      <mat-icon matPrefix>article</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Contact Email</mat-label>
+      <input
+        matInput
+        formControlName="contact_email"
+        placeholder="atika@atikadominic.com"
+      />
+      <mat-icon matPrefix>alternate_email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Facebook Profile Link</mat-label>
+      <input
+        matInput
+        formControlName="facebook_profile"
+        placeholder="facebook.com/profile"
+      />
+      <mat-icon matPrefix>link</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Twitter Profile Link</mat-label>
+      <input
+        matInput
+        formControlName="twitter_profile"
+        placeholder="twitter.com/profile"
+      />
+      <mat-icon matPrefix>link</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Whatsapp Contact Number</mat-label>
+      <input
+        matInput
+        formControlName="whatsapp_profile"
+        placeholder="+254 7123 456 789"
+      />
+      <mat-icon matPrefix>link</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div><button mat-flat-button type="submit"  [disabled]="!authorForm.valid">Save info</button></div>
+</form>

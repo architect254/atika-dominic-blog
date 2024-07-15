@@ -1,0 +1,23 @@
+<section class="atika-info">
+  <article id="about-atika">
+    <h2 class="about-intro mat-title-medium">
+      {{ (author$ | async)?.about_title }}
+    </h2>
+    <p class="about-content">
+      <img
+        [src]="
+          'http://atikadominic.com/uploads/' + (author$ | async)?.profile_image
+        "
+        [alt]="(author$ | async)?.about_title"
+        class="author-profile_picture"
+      />
+      {{ (author$ | async)?.about_title }}
+    </p>
+  </article>
+  <article id="contact-atika">
+    <h2 class="contact-intro mat-title-medium">
+      {{ (author$ | async)?.contact_title }}
+    </h2>
+    <p class="contact-content">{{ (author$ | async)?.contact_description }}</p>
+  </article>
+</section>

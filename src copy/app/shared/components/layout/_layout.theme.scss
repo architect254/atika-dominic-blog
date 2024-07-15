@@ -1,0 +1,49 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($atika-dominic-theme) {
+  mat-toolbar {
+    .header-banner {
+      background-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+
+      .author-name {
+        color: mat.get-theme-color($atika-dominic-theme, tertiary, 90) !important;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
+      }
+    }
+
+    .primary-nav {
+      background-color: mat.get-theme-color($atika-dominic-theme, primary, 30) !important;
+    }
+
+    a[mat-stroked-button],
+    a[mat-button] {
+      color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+    }
+
+    a[mat-stroked-button] {
+      border-color: mat.get-theme-color($atika-dominic-theme, primary, 70) !important;
+    }
+  }
+}
+
+@mixin typography($atika-dominic-theme) {
+  .author-name {
+    font: mat.get-theme-typography($atika-dominic-theme, display-small, font);
+  }
+}
+
+@mixin theme($atika-dominic-theme) {
+  @if mat.theme-has($atika-dominic-theme, color) {
+    @include color($atika-dominic-theme);
+  }
+
+  @if mat.theme-has($atika-dominic-theme, typography) {
+    @include typography($atika-dominic-theme);
+  }
+}
+
+.reduced-size {
+  @include mat.all-component-densities(-8);
+}

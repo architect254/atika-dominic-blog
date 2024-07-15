@@ -1,0 +1,44 @@
+.header-banner-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.primary-nav {
+    .container {
+
+        &,
+        .navigation-btns {
+
+            &,
+            .feature-btns {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
+        }
+    }
+}
+
+.feature-btns {
+    padding-right: 80px;
+}
+
+.author-name {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#outlet-container {
+    margin-top: 50px;
+    min-height: 80vh;
+
+    .article-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 16px;
+    }
+}

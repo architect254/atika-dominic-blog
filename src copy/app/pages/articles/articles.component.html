@@ -1,0 +1,55 @@
+<cdk-virtual-scroll-viewport
+  itemSize="50"
+  minBufferPx="200"
+  maxBufferPx="400"
+  [style.height]="'120vh'"
+  class="grid"
+>
+  @for (article of articles$ | async; track article) {
+  <adb-card
+    tabindex="0"
+    (click)="view(article.id)"
+    (keydown.enter)="view(article.id)"
+    (keydown.space)="view(article.id); $event.preventDefault()"
+  >
+    <mat-card-header>
+      <mat-card-title>{{ article.title }} </mat-card-title>
+      <mat-card-subtitle class="mat-label-small">{{
+        article.keywords
+      }}</mat-card-subtitle>
+      <a
+        mat-icon-button
+        class="card-menu_button"
+        [matMenuTriggerFor]="articleMenu"
+        (click)="$event.stopPropagation()"
+        aria-label="article menu"
+      >
+        <mat-icon fontIcon="more_vert"></mat-icon></a
+      ><mat-menu #articleMenu="matMenu">
+        <button mat-menu-item (click)="edit(article.id)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit article</span>
+        </button>
+        <button mat-menu-item (click)="delete(article.id)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete article</span>
+        </button>
+      </mat-menu>
+    </mat-card-header>
+    <img
+      mat-card-image
+      [src]="'http://atikadominic.com/uploads/' + article.article_image"
+      [alt]="article.title"
+      class="card-image"
+    />
+    <mat-card-content>
+      <p class="mat-body-small">
+        {{ article.description | slice : 0 : 500 }}...
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+    </mat-card-actions>
+  </adb-card>
+  }
+</cdk-virtual-scroll-viewport>

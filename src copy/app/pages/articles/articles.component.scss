@@ -1,0 +1,16 @@
+::ng-deep {
+    .cdk-virtual-scroll-content-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 16px;
+
+        min-width: unset !important;
+    }
+
+    // @media screen and (max-width: 600px) {
+    //     .cdk-virtual-scroll-content-wrapper {
+    //         grid-template-columns: 100%;
+    //         gap: 8px;
+    //     }
+    // }
+}

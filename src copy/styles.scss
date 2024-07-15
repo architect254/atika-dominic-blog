@@ -1,0 +1,99 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// Plus imports for other components in your app.
+
+@use './app/shared/components/layout/layout.theme' as layout;
+@use './app/shared/components/footer/footer.theme' as footer;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the theme object.
+$atika-dominic-theme: mat.define-theme((color: (theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$green-palette,
+      ),
+      typography: (brand-family: 'Permanent Marker',
+        plain-family:'Poppins',
+        bold-weight: 900,
+        medium-weight:500,
+        regular-weight:300),
+      density: (scale: 0,
+      )));
+
+$atika-dominic-dark-theme: mat.define-theme((color: (theme-type: dark,
+        primary: mat.$green-palette,
+        tertiary: mat.$azure-palette,
+      ),
+      typography: (brand-family: 'Permanent Marker',
+        plain-family:'Poppins',
+        bold-weight: 900,
+        medium-weight:500,
+        regular-weight:300),
+      density: (scale: 0,
+      )));
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+:root {
+  @include mat.all-component-themes($atika-dominic-theme);
+
+  // Apply the dark theme only when the user prefers light themes.
+  @media (prefers-color-scheme: dark) {
+    @include mat.all-component-themes($atika-dominic-dark-theme);
+  }
+
+  @include layout.color($atika-dominic-theme);
+  @include layout.typography($atika-dominic-theme);
+  @include footer.color($atika-dominic-theme);
+  @include footer.typography($atika-dominic-theme);
+
+}
+
+// Comment out the line below if you want to use the pre-defined typography utility classes.
+// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
+// @include mat.typography-hierarchy($atika-dominic-light-theme);
+
+// Comment out the line below if you want to use the deprecated `color` inputs.
+// @include mat.color-variants-backwards-compatibility($atika-dominic-light-theme);
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep {
+  .mat-mdc-dialog-content {
+    max-height: 90vh;
+  }
+
+  .mat-danger-dialog {
+    .mat-mdc-snackbar-surface {
+      background-color: red;
+      padding: 0;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  scrollbar-width: none;
+}
