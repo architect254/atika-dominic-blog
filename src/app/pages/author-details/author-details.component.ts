@@ -35,9 +35,9 @@ export class AuthorDetailsComponent extends GridContainerDirective {
   author$!: Observable<Author | null>;
   authorForm!: FormGroup;
 
-  fileToUpload: File | null = null; 
+  fileToUpload: File | null = null;
   fileName: string = ``;
-  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial'; 
+  status: 'initial' | 'uploading' | 'success' | 'fail' = 'initial';
   progress: number = 0;
 
   imageHash = `profile_image-${Date.now()}`;
@@ -125,12 +125,13 @@ export class AuthorDetailsComponent extends GridContainerDirective {
   }
   buildAuthorForm() {
     this.authorForm = this._fb.group({
-      about_title: ['', Validators.required],
-      about_description: ['', Validators.required],
-      profile_image: ['', Validators.required],
-      contact_title: ['', Validators.required],
-      contact_description: ['', Validators.required],
-      contact_email: ['', Validators.required],
+      nickname: ['', Validators.required],
+      education: ['', Validators.required],
+      interests: ['', Validators.required],
+      accomplishments: ['', Validators.required],
+      expertise: ['', Validators.required],
+      residence: ['', Validators.required],
+      about_info: ['', Validators.required],
       facebook_profile: ['', Validators.required],
       twitter_profile: ['', Validators.required],
       whatsapp_profile: ['', Validators.required],
